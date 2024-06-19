@@ -4,6 +4,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   // 使用fastify驱动
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -19,6 +20,11 @@ async function bootstrap() {
       // forceCloseConnections: true,
     },
   );
-  await app.listen(3000);
+  const configService = app.get(ConfigService);
+  const { PORT, PREFIX } = configService.get('app', { infer: true });
+
+  app.enableCors({ origin: '*', credentials: true });
+  app.setGlobalPrefix(PREFIX);
+  await app.listen(PORT, '0.0.0.0');
 }
 bootstrap();

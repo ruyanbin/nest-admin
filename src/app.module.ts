@@ -7,11 +7,11 @@ import { UserModule } from './modules/sys/user/user.module';
     ConfigModule.forRoot({
       cache: true,
       load: [configuration],
-      isGlobal: true
+      isGlobal: true,
     }),
     UserModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

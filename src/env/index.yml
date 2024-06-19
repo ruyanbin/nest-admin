@@ -4,7 +4,7 @@ app:
   BASEURL: http://localhost:${app.PORT}
   LOCALE: 'zh-CN'
   PROJECTDIR: '/nest-admin'
-
+  PREFIX: 'api'
 # 是否允许多端登录
 MULTI_DEVICE_LOGIN: true
 
