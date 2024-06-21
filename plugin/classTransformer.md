@@ -19,3 +19,5 @@ let users = plainToClass(User, userJson);
 import {classToPlain} from "class-transformer";
 let photo = classToPlain(photo);
 ```
+### Expose
+空值实例中哪些字段存在
