@@ -3,19 +3,19 @@ import {
   Inject,
   Injectable,
   PipeTransform,
-} from '@nestjs/common'
-import { REQUEST } from '@nestjs/core'
+} from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
 
-import { OperatorDto } from '../dto/operator.dto'
+import { OperatorDto } from '../dto/operator.dto';
 
 @Injectable()
 export class UpdaterPipe implements PipeTransform {
   constructor(@Inject(REQUEST) private readonly request: any) {}
   transform(value: OperatorDto, metadata: ArgumentMetadata) {
-    const user = this.request.user as IAuthUser
+    const user = this.request.user as IAuthUser;
 
-    value.updateBy = user.uid
+    value.updateBy = user.uid;
 
-    return value
+    return value;
   }
 }
