@@ -21,3 +21,7 @@ let photo = classToPlain(photo);
 ```
 ### Expose
 空值实例中哪些字段存在
+### Eclude
+排除返回字段 不反回给前段
+
+

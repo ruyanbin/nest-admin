@@ -21,5 +21,11 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+   'no-console': 'off',
+    'unused-imports/no-unused-vars': 'off',
+    'unused-imports/no-unused-imports': 2,
+    'ts/consistent-type-imports': 'off',
+    'node/prefer-global/process': 'off',
+    'node/prefer-global/buffer': 'off',
   },
 };

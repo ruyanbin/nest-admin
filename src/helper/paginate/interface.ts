@@ -1,9 +1,9 @@
-import {ObjectLiteral} from 'typeorm';
+import { ObjectLiteral } from 'typeorm';
 
 export interface IPaginationMeta extends ObjectLiteral {
-  itemCount: number
-  totalItems?: number
-  itemsPerPage: number
-  totalPages?: number
-  currentPage: number
+  itemCount: number;
+  totalItems?: number;
+  itemsPerPage: number;
+  totalPages?: number;
+  currentPage: number;
 }
