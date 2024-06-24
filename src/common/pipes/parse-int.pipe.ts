@@ -1,5 +1,4 @@
 import {
-  ArgumentMetadata,
   BadRequestException,
   Injectable,
   PipeTransform,
@@ -7,7 +6,7 @@ import {
 
 @Injectable()
 export class ParseIntPipe implements PipeTransform<string, number> {
-  transform(value: string, metadata: ArgumentMetadata): number {
+  transform(value: string): number {
     const val = Number.parseInt(value, 10);
 
     if (Number.isNaN(val))

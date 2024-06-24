@@ -1,7 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { API_SECURITY_AUTH } from './common/decorators/swagger.decorators';
 import { CommonEntity } from './common/entity/common.entity';
 import { ResOp, TreeResult } from './common/model/response.model';
 import { Pagination } from './helper/paginate/pagination';

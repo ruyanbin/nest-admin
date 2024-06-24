@@ -15,7 +15,7 @@ export enum Order {
   DESC = 'DESC',
 }
 
-export class PagerDto<T = any> {
+export class PagerDto {
   @ApiProperty({ minimum: 1, default: 1 })
   @Min(1)
   @IsInt()

@@ -1,18 +1,22 @@
+import { Exclude } from 'class-transformer';
 import { Column, Entity } from 'typeorm';
 import { CommonEntity } from '~/common/entity/common.entity';
-import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'sys_user' })
-export class User extends CommonEntity {
+export class UserEntity extends CommonEntity {
   @Column({ unique: true })
   username: string;
   @Exclude()
   @Column()
   password: string;
-  @Column({ nullable: true })
+
+  @Column({ length: 32 })
   psalt: string;
-  @Column({ name: 'avatar', nullable: true })
+
+  @Column({ nullable: true })
   nickname: string;
+  @Column({ name: 'avatar', nullable: true })
+  avatar: string;
   @Column({ nullable: true })
   qq: string;
   @Column({ nullable: true })
@@ -20,7 +24,7 @@ export class User extends CommonEntity {
   @Column({ nullable: true })
   phone: string;
   @Column({ nullable: true })
-  remrk: string;
-  @Column({ type: 'int', nullable: true, default: 1 })
-  status: number;
+  remark: string;
+  @Column({ type: 'tinyint', nullable: true, default: 1 })
+  status: string;
 }
