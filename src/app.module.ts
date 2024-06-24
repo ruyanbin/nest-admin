@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import configuration from './env/index';
+import { typeormconfig } from './config/typeorm.config';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './modules/sys/user/user.module';
 @Module({
@@ -7,12 +8,14 @@ import { UserModule } from './modules/sys/user/user.module';
     // 加载全局变量
     ConfigModule.forRoot({
       cache: true,
-      load: [configuration],
+      expandVariables: true,
       isGlobal: true,
+      load: [configuration],
     }),
+    typeormconfig(),
     UserModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
