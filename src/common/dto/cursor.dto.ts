@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Transform } from 'class-transformer';
 import { IsInt, IsOptional, Max, Min } from 'class-validator';
 
-export class CursorDto<T = any> {
+export class CursorDto {
   @ApiProperty({ minimum: 0, default: 0 })
   @Min(0)
   @IsInt()

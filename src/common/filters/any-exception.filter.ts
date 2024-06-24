@@ -1,11 +1,10 @@
 import {
   ArgumentsHost,
-  Catch,
   ExceptionFilter,
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { FastifyRequest, FastifyReply } from 'fastify';
+import { FastifyReply } from 'fastify';
 import { QueryFailedError } from 'typeorm';
 
 import { BusinessException } from '../exceptions/biz.exception';
@@ -26,10 +25,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
   }
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    const request = ctx.getRequest<FastifyRequest>();
     const response = ctx.getResponse<FastifyReply>();
-
-    const url = request.raw.url!;
     const status = this.getStatus(exception);
     const message = this.getErrorMessage(exception);
     const apiErrorCode =
