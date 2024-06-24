@@ -12,6 +12,7 @@ import { UserModule } from './modules/sys/user/user.module';
       isGlobal: true,
       load: [configuration],
     }),
+    // 数据库
     typeormconfig(),
     UserModule,
   ],
