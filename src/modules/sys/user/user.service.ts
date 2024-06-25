@@ -5,6 +5,7 @@ import {Repository, SelectQueryBuilder} from "typeorm";
 import {UserStatus} from "./constant"
 import {AccountInfo} from './user.model'
 import {isEmpty} from "lodash";
+import {md5} from '~/utils'
 import {BusinessException} from "~/common/exceptions/biz.exception";
 import {ErrorEnum} from "~/constants/error-code.constant";
 import { AccountUpdateDto } from "./dto/account.dto";
