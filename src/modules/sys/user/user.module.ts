@@ -10,4 +10,4 @@ const providers = [UserService];
   providers: [...providers],
   exports: [...providers],
 })
-export class UserModule { }
+export class UserModule {}

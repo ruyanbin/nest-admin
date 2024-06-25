@@ -12,7 +12,6 @@ export function setupSwagger(
   const { ENABLE, PATH } = configService.get('swagger');
 
   if (!ENABLE) return;
-  console.log(1);
   const documentBuilder = new DocumentBuilder()
     .setTitle(NAME)
     .setDescription(`${NAME} API document`)

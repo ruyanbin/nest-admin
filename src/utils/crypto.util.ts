@@ -1,28 +1,33 @@
-import CryptoJS from "crypto-js";
-import * as crypto from "node:crypto";
+import * as CryptoJS from 'crypto-js';
 
-const key = CryptoJS.enc.Utf8.parse('ruyanbn12345678')
-const iv =CryptoJS.enc.Utf8.parse('12345678ruyanbin')
+const key = CryptoJS.enc.Utf8.parse('1234123412ABCDEF'); //十六位十六进制数作为密钥
+const iv = CryptoJS.enc.Utf8.parse('ABCDEF1234123412'); //十六位十六进制数作为密钥偏移量
 
-//加密
-export function aesEncrypt(data) {
-    if(!data) return data
-    const enc = CryptoJS.AES.encrypt(data,key,{
-        iv,mode:CryptoJS.mode.CBC,
-        padding:CryptoJS.pad.Pkcs7
-    })
-return enc.toString()
-}
-// 解密
-export function aesDecrypt(data){
-    if(!data) return data
-    const dec = CryptoJS.AES.decrypt(data,key,{
-        iv,mode:CryptoJS.mode.CBC,
-        padding:CryptoJS.pad.Pkcs7
-    })
-    return dec.toString(CryptoJS.enc.Utf8)
+//解密方法
+export function decryption(word) {
+  if (!word) return word;
+  const encryptedHexStr = CryptoJS.enc.Hex.parse(word);
+  const secs = CryptoJS.enc.Base64.stringify(encryptedHexStr);
+  const decrypt = CryptoJS.AES.decrypt(secs, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7,
+  });
+  const decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
+  return decryptedStr.toString();
 }
 
-export function md5(str: string): string {
-    return CryptoJS.MD5(str).toString()
+//加密方法
+export function encryption(word) {
+  if (!word) return word;
+  const srcs = CryptoJS.enc.Utf8.parse(word);
+  const encrypted = CryptoJS.AES.encrypt(srcs, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7,
+  });
+  return encrypted.ciphertext.toString().toUpperCase();
+}
+export function md5(str: string) {
+  return CryptoJS.MD5(str).toString();
 }

@@ -11,7 +11,7 @@ export class UserEntity extends CommonEntity {
   password: string;
 
   @Column({ length: 32 })
-  psalt: string;
+  salt: string;
 
   @Column({ nullable: true })
   nickname: string;

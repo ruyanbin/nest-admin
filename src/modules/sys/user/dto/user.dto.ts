@@ -1,4 +1,4 @@
-import { ApiProperty, IntersectionType, PartialType } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   ArrayMaxSize,
   ArrayMinSize,
@@ -15,7 +15,6 @@ import {
 } from 'class-validator';
 import { isEmpty } from 'lodash';
 import { Type } from 'class-transformer';
-import { PagerDto } from '~/common/dto/pager.dto';
 
 export class UserDto {
   @ApiProperty({ description: '头像' })
@@ -40,7 +39,7 @@ export class UserDto {
   @ArrayNotEmpty()
   @ArrayMinSize(1)
   @ArrayMaxSize(3)
-  roleIds: number[];
+  roleIds?: number[];
 
   @ApiProperty({ description: '归属大区', type: Number })
   @Type(() => Number)
@@ -66,7 +65,9 @@ export class UserDto {
   @ApiProperty({ description: 'QQ' })
   @IsOptional()
   @IsString()
-  @Matches(/^[1-9][0-9]{4,10}$/)
+  @Matches(/^[1-9][0-9]{4,10}$/, {
+    message: 'qq账号格式错误',
+  })
   @MinLength(5)
   @MaxLength(11)
   qq?: string;

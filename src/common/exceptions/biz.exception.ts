@@ -15,7 +15,7 @@ export class BusinessException extends HttpException {
       this.errorCode = RESPONSE_SUCCESS_CODE;
       return;
     }
-
+    console.log(11222);
     const [code, message] = error.split(':');
     super(
       HttpException.createBody({
