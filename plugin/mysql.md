@@ -16,7 +16,7 @@ drop database 库名
 ```
 显示数据库
 ```angular2html
-show database;
+show databases;
 ```
 选择数据库
 ```angular2html

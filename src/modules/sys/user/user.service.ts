@@ -1,7 +1,85 @@
 import { Injectable } from '@nestjs/common';
-
-
+import {InjectRepository} from "@nestjs/typeorm";
+import {UserEntity} from "~/modules/sys/user/user.entity";
+import {Repository, SelectQueryBuilder} from "typeorm";
+import {UserStatus} from "./constant"
+import {AccountInfo} from './user.model'
+import {isEmpty} from "lodash";
+import {BusinessException} from "~/common/exceptions/biz.exception";
+import {ErrorEnum} from "~/constants/error-code.constant";
+import { AccountUpdateDto } from "./dto/account.dto";
+import { PasswordUpdateDto} from './dto/password.dto'
 @Injectable()
 export class UserService {
-  constructor() {}
-}
+  constructor(
+      @InjectRepository(UserEntity)
+      private readonly userRepository: Repository<UserEntity>,
+  ) {}
+  async findUserById(id: number): Promise<UserEntity | null> {
+      return this.userRepository.createQueryBuilder('user').where({
+          id,
+          status:UserStatus.Enabled
+      }).getOne()
+  }
+  async findUserByUserName(username: string): Promise<UserEntity | null> {
+      return this.userRepository.createQueryBuilder('user').where({
+          username: username,
+          status:UserStatus.Enabled
+      }).getOne()
+  }
+/**
+ *获取用户信息
+ * @param uid user id
+ * */
+  async getAccountInfo(uid: number): Promise<AccountInfo> {
+      const user: UserEntity = await this.userRepository
+          .createQueryBuilder('user')
+          // .leftJoinAndSelect('user.roles', 'role')
+          .where(`user.id = :uid`, { uid })
+          .getOne()
+
+      if (isEmpty(user)){
+          throw new BusinessException(ErrorEnum.USER_NOT_FOUND);
+      }
+
+      delete user?.psalt
+
+      return user
+  }
+  /** 更新个人信息*/
+  async updateAccountInfo(uid:number,info:AccountUpdateDto) {
+      const user = await this.userRepository.findOneBy({id:uid})
+      if(isEmpty(user)){
+throw new BusinessException(ErrorEnum.USER_NOT_FOUND)
+      }
+      const data={
+          ...(info.nickname?{nickname:info.nickname}:null),
+          ...(info.avatar? {avater:info.avatar}:null),
+          ...(info.email?{email:info.email}:null),
+          ...(info.phone?{phone:info.phone}:null),
+          ...(info.qq?{qq:info.qq}:null),
+          ...(info.remark?{remark:info.remark}:null),
+      }
+      if(!info.avatar && info.qq){
+          // 如果qq 不相登则更新qq头像
+          // data.avater = await this.qqService.getAvater(info.qq)
+      }
+      await this.userRepository.update(uid,data)
+  }z
+    /**
+     *更改密码
+     */
+    async updatePassword(uid:number,dto:PasswordUpdateDto):Promise<void>{
+     const user = await this.userRepository.findOneBy({id:uid})
+        if (isEmpty(user)){
+            throw new BusinessException(ErrorEnum.USER_NOT_FOUND);
+        }
+
+        const comparePassword = md5(`${dto.oldPassword}${user.psalt}`)
+        // 原密码不一致，不允许更改
+        if (user.password !== comparePassword){
+            throw new BusinessException(ErrorEnum.PASSWORD_MISMATCH)
+        }
+        const password = md5(`${dto.newPassword}${user.psalt}`)
+        await this.userRepository.update({id:uid},{password})
+    }
