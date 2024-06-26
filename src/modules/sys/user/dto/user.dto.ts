@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType, IntersectionType } from '@nestjs/swagger';
+import { ApiProperty, IntersectionType, PartialType } from '@nestjs/swagger';
 import {
   ArrayMaxSize,
   ArrayMinSize,
@@ -23,14 +23,16 @@ export class UserDto {
   @IsString()
   avatar?: string;
 
-  @ApiProperty({ description: '登录账号', example: 'admin' })
+  @ApiProperty({ description: '登录账号' })
   @IsString()
-  @Matches(/^[a-zA-Z0-9]+$/)
+  @Matches(/^[a-zA-Z0-9]+$/, {
+    message: '账户只能由字母，数字组成',
+  })
   @MinLength(4)
   @MaxLength(20)
   username: string;
 
-  @ApiProperty({ description: '登录密码', example: 'Aa123456' })
+  @ApiProperty({ description: '登录密码' })
   @IsOptional()
   @Matches(/^\S*(?=\S{6,})(?=\S*\d)(?=\S*[A-Za-z])\S*$/, {
     message: '密码必须包含数字、字母，长度为6-16',
@@ -42,18 +44,12 @@ export class UserDto {
   @ArrayMaxSize(3)
   roleIds?: number[];
 
-  @ApiProperty({ description: '归属大区', type: Number })
-  @Type(() => Number)
-  @IsInt()
-  @IsOptional()
-  deptId?: number;
-
-  @ApiProperty({ description: '昵称', example: 'admin' })
+  @ApiProperty({ description: '昵称' })
   @IsOptional()
   @IsString()
   nickname: string;
 
-  @ApiProperty({ description: '邮箱', example: '1@qq.com' })
+  @ApiProperty({ description: '邮箱' })
   @IsEmail()
   @ValidateIf((O) => !isEmpty(O.email))
   email: string;
@@ -87,11 +83,6 @@ export class UserQueryDto extends IntersectionType(
   PagerDto<UserDto>,
   PartialType(UserDto),
 ) {
-  @ApiProperty({ description: '归属大区', example: 1, required: false })
-  @IsInt()
-  @IsOptional()
-  deptId?: number;
-
   @ApiProperty({ description: '状态', example: 0, required: false })
   @IsInt()
   @IsOptional()

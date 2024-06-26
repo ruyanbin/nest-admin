@@ -3,6 +3,8 @@ import configuration from './env/index';
 import { typeormconfig } from './config/typeorm.config';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './modules/sys/user/user.module';
+import {LoggerService} from "~/shared/logger/logger.service";
+
 @Module({
   imports: [
     // 加载全局变量
@@ -17,6 +19,6 @@ import { UserModule } from './modules/sys/user/user.module';
     UserModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [LoggerService],
 })
 export class AppModule {}

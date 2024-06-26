@@ -61,7 +61,6 @@ async function bootstrap() {
   //     },
   //   }),
   // );
-  console.log(PORT);
   setupSwagger(app, configService);
   await app.listen(PORT, '0.0.0.0');
 }

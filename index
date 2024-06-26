@@ -1,0 +1,15 @@
+{
+      "id": 1,
+      "createdAt": "2024-06-26T08:04:10.690Z",
+      "updatedAt": "2024-06-26T08:04:10.690Z",
+      "username": "admin",
+      "password": "Aa123456",
+      "salt": "RcpEDYwMry4_JDFoB_v99tly1HrKa7LU",
+      "nickname": "admin",
+      "avatar": "海上钢琴师",
+      "qq": "1393573925",
+      "email": "18303671156@qq.com",
+      "phone": "18303671156",
+      "remark": "string",
+      "status": 0
+    }

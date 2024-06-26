@@ -109,8 +109,9 @@ export class UserService {
     const newPassword = md5(`${password}${user.salt}`);
     await this.userRepository.update({ id: uid }, { password: newPassword });
   }
-  //
-  async create({ username, password, roleIds, deptId, ...data }: UserDto) {
+
+  // 新增用户
+  async create({ username, password, roleIds, ...data }: UserDto) {
     const exists = await this.userRepository.findOneBy({ username });
     if (!isEmpty(exists)) {
       throw new BusinessException(ErrorEnum.SYSTEM_USER_EXISTS);
@@ -127,15 +128,15 @@ export class UserService {
         ...data,
         salt: salt,
         roles: roleIds,
-        dept: deptId,
       });
       return await manager.save(u);
     });
   }
-  // 更新菜单
+
+  // 修改用户
   async update(
     id: number,
-    { password, deptId, roleIds, status, ...data }: UserUpdateDto,
+    { password, roleIds, status, ...data }: UserUpdateDto,
   ): Promise<void> {
     await this.entityManager.transaction(async (manager) => {
       if (password) {
@@ -144,10 +145,9 @@ export class UserService {
       // @ts-ignore
       await manager.update(UserEntity, id, { ...data, status });
 
-      await this.userRepository
+      return await this.userRepository
         .createQueryBuilder('user')
         // .leftJoinAndSelect('user.roles', 'roles')
-        .leftJoinAndSelect('user.dept', 'dept')
         .where('user.id = :id', { id })
         .getOne();
     });
@@ -161,7 +161,6 @@ export class UserService {
     pageSize,
     username,
     nickname,
-    deptId,
     email,
     status,
   }: UserQueryDto): Promise<Pagination<UserEntity>> {
@@ -175,11 +174,26 @@ export class UserService {
         ...(email ? { email: Like(`%${email}%`) } : null),
         ...(!isNil(status) ? { status } : null),
       });
-    if (deptId) queryBuilder.andWhere('dept.id = :deptId', { deptId });
-
     return paginate<UserEntity>(queryBuilder, {
       page,
       pageSize,
     });
+  }
+
+  /**
+   * 删除用户
+   * */
+
+  async delete(userIds: number[]) {
+    const deleteResult = await this.userRepository.delete(userIds);
+    if (deleteResult.affected) {
+      return {
+        message: '成功删除',
+      };
+    } else {
+      return {
+        message: '删除失败',
+      };
+    }
   }
 }
