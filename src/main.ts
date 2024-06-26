@@ -5,10 +5,7 @@ import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { fastifyApp } from './common/adapters/fastify.adapters';
 import { ConfigService } from '@nestjs/config';
 import { useContainer } from 'class-validator';
-import {
-  HttpStatus,
-  ValidationPipe,
-} from '@nestjs/common';
+import { HttpStatus, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   // 使用fastify驱动
@@ -40,8 +37,7 @@ async function bootstrap() {
       // forbidNonWhitelisted:true, // 存在非白名单属性时停止处理请求，并返回对应的错误信息
       transform: true, // 可以自动将有效载荷转换为根据其 DTO 类型化的对象
       stopAtFirstError: true, //当设置为true时，在遇到第一个错误后，将停止对给定属性的验证。默认为false。
-        errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY, //个设置允许你指定在出现错误时将使用哪种异常类型 错误code
-
+      errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY, //个设置允许你指定在出现错误时将使用哪种异常类型 错误code
     }),
   );
   // app.useGlobalPipes(

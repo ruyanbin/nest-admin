@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { ApiProperty, PartialType, IntersectionType } from '@nestjs/swagger';
 import {
   ArrayMaxSize,
   ArrayMinSize,
@@ -15,6 +15,7 @@ import {
 } from 'class-validator';
 import { isEmpty } from 'lodash';
 import { Type } from 'class-transformer';
+import { PagerDto } from '~/common/dto/pager.dto';
 
 export class UserDto {
   @ApiProperty({ description: '头像' })
@@ -82,3 +83,17 @@ export class UserDto {
 }
 export class UserUpdateDto extends PartialType(UserDto) {}
 // 翻页
+export class UserQueryDto extends IntersectionType(
+  PagerDto<UserDto>,
+  PartialType(UserDto),
+) {
+  @ApiProperty({ description: '归属大区', example: 1, required: false })
+  @IsInt()
+  @IsOptional()
+  deptId?: number;
+
+  @ApiProperty({ description: '状态', example: 0, required: false })
+  @IsInt()
+  @IsOptional()
+  status?: number;
+}

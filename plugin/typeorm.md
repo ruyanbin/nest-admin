@@ -63,3 +63,38 @@ FROM users user
 WHERE user.id = 1
 ```
 然后返回一个 User 实例
+---
+## api
+### Like 模糊匹配
+--------------------------------------------------------------------------------
+### FindManyOptions
+查询多个实体：
+```angular2html
+import { getRepository } from 'typeorm';
+import { User } from './entity/User';
+ 
+const userRepository = getRepository(User);
+ 
+const users = await userRepository.find({
+  skip: 10, // 跳过多少条数据
+  take: 5, // 取多少条数据
+  order: {
+    id: 'ASC', // 按照id升序排列
+  },
+});
+```
+###  FindOptionsWhere
+查询带条件的实体
+```angular2html
+const userRepository = getRepository(User);
+ 
+const users = await userRepository.find({
+  where: {
+    age: MoreThan(30), // 查询年龄大于30的用户
+  },
+  order: {
+    id: 'ASC', // 按照id升序排列
+  },
+});
+
+```

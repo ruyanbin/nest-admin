@@ -15,7 +15,7 @@ export enum Order {
   DESC = 'DESC',
 }
 
-export class PagerDto {
+export class PagerDto<T = any> {
   @ApiProperty({ minimum: 1, default: 1 })
   @Min(1)
   @IsInt()
@@ -36,11 +36,6 @@ export class PagerDto {
     toClassOnly: true,
   })
   pageSize?: number;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  field?: string; // | keyof T
   @ApiProperty({ enum: Order })
   @IsEnum(Order)
   @IsOptional()

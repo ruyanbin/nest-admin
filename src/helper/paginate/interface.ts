@@ -1,4 +1,8 @@
 import { ObjectLiteral } from 'typeorm';
+export enum PaginationTypeEnum {
+  LIMIT_AND_OFFSET = 'limit',
+  TAKE_AND_SKIP = 'take',
+}
 
 export interface IPaginationMeta extends ObjectLiteral {
   itemCount: number;
@@ -6,4 +10,10 @@ export interface IPaginationMeta extends ObjectLiteral {
   itemsPerPage: number;
   totalPages?: number;
   currentPage: number;
+}
+
+export interface IPaginationOptions {
+  page: number;
+  pageSize: number;
+  paginationType?: PaginationTypeEnum;
 }

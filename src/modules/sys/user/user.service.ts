@@ -1,16 +1,19 @@
-import {Injectable} from '@nestjs/common';
-import {InjectEntityManager, InjectRepository} from '@nestjs/typeorm';
-import {UserEntity} from '~/modules/sys/user/user.entity';
-import {EntityManager, Repository} from 'typeorm';
-import {UserStatus} from './constant';
-import {AccountInfo} from './user.model';
-import {isEmpty} from 'lodash';
-import {md5, randomValue} from '~/utils';
-import {BusinessException} from '~/common/exceptions/biz.exception';
-import {ErrorEnum} from '~/constants/error-code.constant';
-import {AccountUpdateDto} from './dto/account.dto';
-import {PasswordUpdateDto} from './dto/password.dto';
-import {UserDto, UserUpdateDto} from './dto/user.dto';
+import { Injectable } from '@nestjs/common';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from '~/modules/sys/user/user.entity';
+import { EntityManager, Like, Repository } from 'typeorm';
+import { UserStatus } from './constant';
+import { AccountInfo } from './user.model';
+import { isEmpty } from 'lodash';
+import { md5, randomValue } from '~/utils';
+import { BusinessException } from '~/common/exceptions/biz.exception';
+import { ErrorEnum } from '~/constants/error-code.constant';
+import { AccountUpdateDto } from './dto/account.dto';
+import { PasswordUpdateDto } from './dto/password.dto';
+import { UserDto, UserQueryDto, UserUpdateDto } from './dto/user.dto';
+import { Pagination } from '~/helper/paginate/pagination';
+import { paginate } from '~/helper/paginate';
+import { isNil } from '@nestjs/common/utils/shared.utils';
 
 @Injectable()
 export class UserService {
@@ -147,6 +150,36 @@ export class UserService {
         .leftJoinAndSelect('user.dept', 'dept')
         .where('user.id = :id', { id })
         .getOne();
+    });
+  }
+
+  /**
+   * 查询用户列表
+   */
+  async list({
+    page,
+    pageSize,
+    username,
+    nickname,
+    deptId,
+    email,
+    status,
+  }: UserQueryDto): Promise<Pagination<UserEntity>> {
+    const queryBuilder = this.userRepository
+      .createQueryBuilder('user')
+      // .leftJoinAndSelect('user.dept','dept')
+      // .leftJoinAndSelect('user.roles', 'roles')
+      .where({
+        ...(username ? { username: Like(`%${username}%`) } : null),
+        ...(nickname ? { nickname: Like(`%${nickname}%`) } : null),
+        ...(email ? { email: Like(`%${email}%`) } : null),
+        ...(!isNil(status) ? { status } : null),
+      });
+    if (deptId) queryBuilder.andWhere('dept.id = :deptId', { deptId });
+
+    return paginate<UserEntity>(queryBuilder, {
+      page,
+      pageSize,
     });
   }
 }
