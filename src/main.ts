@@ -7,7 +7,6 @@ import { ConfigService } from '@nestjs/config';
 import { useContainer } from 'class-validator';
 import {
   HttpStatus,
-  UnprocessableEntityException,
   ValidationPipe,
 } from '@nestjs/common';
 

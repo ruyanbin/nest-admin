@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { ErrorEnum } from '../../constants/error-code.constant';
-import { RESPONSE_SUCCESS_CODE } from '../../constants/response.constant';
+import { ErrorEnum } from '~/constants/error-code.constant';
+import { RESPONSE_SUCCESS_CODE } from '~/constants/response.constant';
 export class BusinessException extends HttpException {
   private errorCode: number;
   constructor(error: ErrorEnum | string) {

@@ -62,12 +62,4 @@ SELECT
 FROM users user
 WHERE user.id = 1
 ```
-然后返回一个 User 实例:
-```angular2html
-User {
-    id: 1,
-    firstName: "Timber",
-    lastName: "Saw"
-}
-
-```
+然后返回一个 User 实例

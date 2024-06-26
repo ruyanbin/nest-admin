@@ -1,16 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from '~/modules/sys/user/user.entity';
-import { Repository, EntityManager } from 'typeorm';
-import { UserStatus } from './constant';
-import { AccountInfo } from './user.model';
-import { isEmpty } from 'lodash';
-import { md5, randomValue } from '~/utils';
-import { BusinessException } from '~/common/exceptions/biz.exception';
-import { ErrorEnum } from '~/constants/error-code.constant';
-import { AccountUpdateDto } from './dto/account.dto';
-import { PasswordUpdateDto } from './dto/password.dto';
-import { UserDto, UserUpdateDto } from './dto/user.dto';
+import {Injectable} from '@nestjs/common';
+import {InjectEntityManager, InjectRepository} from '@nestjs/typeorm';
+import {UserEntity} from '~/modules/sys/user/user.entity';
+import {EntityManager, Repository} from 'typeorm';
+import {UserStatus} from './constant';
+import {AccountInfo} from './user.model';
+import {isEmpty} from 'lodash';
+import {md5, randomValue} from '~/utils';
+import {BusinessException} from '~/common/exceptions/biz.exception';
+import {ErrorEnum} from '~/constants/error-code.constant';
+import {AccountUpdateDto} from './dto/account.dto';
+import {PasswordUpdateDto} from './dto/password.dto';
+import {UserDto, UserUpdateDto} from './dto/user.dto';
+
 @Injectable()
 export class UserService {
   constructor(
@@ -107,9 +108,7 @@ export class UserService {
   }
   //
   async create({ username, password, roleIds, deptId, ...data }: UserDto) {
-    console.log(111111);
     const exists = await this.userRepository.findOneBy({ username });
-    console.log(exists,'exsisits',isEmpty(exists))
     if (!isEmpty(exists)) {
       throw new BusinessException(ErrorEnum.SYSTEM_USER_EXISTS);
     }
@@ -118,7 +117,6 @@ export class UserService {
       if (!password) {
         password = md5(`Aa123456${salt}`);
       }
-
       // @ts-ignore
       const u = manager.create(UserEntity, {
         username,
@@ -128,8 +126,7 @@ export class UserService {
         roles: roleIds,
         dept: deptId,
       });
-      const result = await manager.save(u);
-      return result;
+      return await manager.save(u);
     });
   }
   // 更新菜单
@@ -144,7 +141,7 @@ export class UserService {
       // @ts-ignore
       await manager.update(UserEntity, id, { ...data, status });
 
-      const user = await this.userRepository
+      await this.userRepository
         .createQueryBuilder('user')
         // .leftJoinAndSelect('user.roles', 'roles')
         .leftJoinAndSelect('user.dept', 'dept')
