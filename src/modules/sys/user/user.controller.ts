@@ -1,5 +1,3 @@
-import { Controller } from '@nestjs/common';
-
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
