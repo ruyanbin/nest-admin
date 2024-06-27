@@ -14,7 +14,6 @@ import {
   ValidateIf,
 } from 'class-validator';
 import { isEmpty } from 'lodash';
-import { Type } from 'class-transformer';
 import { PagerDto } from '~/common/dto/pager.dto';
 
 export class UserDto {

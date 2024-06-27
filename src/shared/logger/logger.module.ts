@@ -5,7 +5,7 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 @Module({})
 //动态模块
 export class LoggerModule {
-  static forRoot(config: TypeOrmModule) {
+  static forRoot() {
     return {
       global:true, //
       providers: [LoggerService],
