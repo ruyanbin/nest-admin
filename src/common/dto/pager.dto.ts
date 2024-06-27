@@ -1,6 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Transform } from 'class-transformer';
-import { Allow, IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
+import {
+  Allow,
+  IsEnum,
+  IsInt,
+  IsOptional,
+  Max,
+  Min,
+} from 'class-validator';
 
 export enum Order {
   ASC = 'ASC',

@@ -28,6 +28,7 @@ export class UserController {
   @Post()
   @ApiOperation({ summary: '新增用户' })
   async create(@Body() data: UserDto): Promise<void> {
+    console.log(data, '创建用户');
     await this.userService.create(data);
   }
 
