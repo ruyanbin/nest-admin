@@ -121,7 +121,6 @@ export class UserService {
       if (!password) {
         password = md5(`Aa123456${salt}`);
       }
-      // @ts-ignore
       const u = manager.create(UserEntity, {
         username,
         password,
@@ -142,7 +141,6 @@ export class UserService {
       if (password) {
         await this.forceUpdatePassword(id, password);
       }
-      // @ts-ignore
       await manager.update(UserEntity, id, { ...data, status });
 
       return await this.userRepository

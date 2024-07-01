@@ -9,12 +9,13 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UserDto, UserQueryDto, UserUpdateDto } from './dto/user.dto';
 import { ApiResult } from '~/common/decorators/api-result.decorator';
 import { UserEntity } from '~/modules/sys/user/user.entity';
 @ApiTags('System - 用户模块')
+@ApiBasicAuth()
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
