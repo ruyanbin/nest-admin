@@ -1,6 +1,6 @@
 import { createLogger, format, Logger, transports } from 'winston';
 import 'winston-daily-rotate-file';
-import {Global, Injectable} from '@nestjs/common';
+import { Global, Injectable } from '@nestjs/common';
 @Global()
 @Injectable()
 export class LoggerService {
