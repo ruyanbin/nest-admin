@@ -1,3 +1,4 @@
+import { AuthModule } from './modules/auth/auth.module';
 import { Module } from '@nestjs/common';
 import configuration from './env/index';
 import { typeormconfig } from './config/typeorm.config';
@@ -7,10 +8,11 @@ import { LoggerService } from '~/shared/logger/logger.service';
 import { AllExceptionsFilter } from '~/common/filters/any-exception.filter';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from '~/common/interceptors/transform.interceptor';
-import { TimeoutInterceptor } from "~/common/interceptors/timeout.interceptor";
+import { TimeoutInterceptor } from '~/common/interceptors/timeout.interceptor';
 import { RedisCacheModule } from './shared/redis/redis.module';
 @Module({
   imports: [
+    AuthModule,
     // 加载全局变量
     ConfigModule.forRoot({
       cache: true,
@@ -34,4 +36,4 @@ import { RedisCacheModule } from './shared/redis/redis.module';
     LoggerService,
   ],
 })
-export class AppModule {}
+export class AppModule { }
