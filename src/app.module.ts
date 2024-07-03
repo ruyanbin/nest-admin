@@ -36,4 +36,4 @@ import { RedisCacheModule } from './shared/redis/redis.module';
     LoggerService,
   ],
 })
-export class AppModule { }
+export class AppModule {}
