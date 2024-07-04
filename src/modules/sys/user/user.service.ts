@@ -14,15 +14,25 @@ import { UserDto, UserQueryDto, UserUpdateDto } from './dto/user.dto';
 import { Pagination } from '~/helper/paginate/pagination';
 import { paginate } from '~/helper/paginate';
 import { isNil } from '@nestjs/common/utils/shared.utils';
+import { RegisterDto } from '~/modules/auth/dto/auth.dto';
+import { InjectRedis } from '@nestjs-modules/ioredis';
+import Redis from 'ioredis';
+import {
+  genAuthPermKey,
+  genAuthPVKey,
+  genAuthTokenKey,
+} from '~/helper/getRedisKey';
 
 @Injectable()
 export class UserService {
   constructor(
+    // @InjectRedis()
+    // private readonly redis: Redis,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     @InjectEntityManager()
     private entityManager: EntityManager,
-  ) {}
+  ) { }
 
   async findUserById(id: number): Promise<UserEntity | null> {
     return this.userRepository
@@ -78,10 +88,7 @@ export class UserService {
       ...(info.qq ? { qq: info.qq } : null),
       ...(info.remark ? { remark: info.remark } : null),
     };
-    if (!info.avatar && info.qq) {
-      // 如果qq 不相登则更新qq头像
-      // data.avater = await this.qqService.getAvater(info.qq)
-    }
+
     await this.userRepository.update(uid, data);
   }
 
@@ -117,6 +124,7 @@ export class UserService {
       throw new BusinessException(ErrorEnum.SYSTEM_USER_EXISTS);
     }
     await this.entityManager.transaction(async (manager) => {
+      console.log(manager, 'manager');
       const salt = randomValue(32);
       if (!password) {
         password = md5(`Aa123456${salt}`);
@@ -193,5 +201,31 @@ export class UserService {
         message: '删除失败',
       };
     }
+  }
+
+  /***/
+  async register({ username, ...data }: RegisterDto): Promise<void> {
+    const exists = await this.userRepository.findOneBy({ username });
+    if (!isEmpty(exists)) {
+      throw new BusinessException(ErrorEnum.SYSTEM_USER_EXISTS);
+    }
+    await this.entityManager.transaction(async (manager) => {
+      const salt = randomValue(32);
+      const password = md5(`${data.password ?? 'Aa123456'}${salt}`);
+      const u = manager.create(UserEntity, {
+        username,
+        password,
+        status: 1,
+        salt: salt,
+      });
+      const user = await manager.save(u);
+      return user;
+    });
+  }
+
+  async forbidden(uid: number, accessToken: string) {
+    // await this.redis.del(genAuthPVKey(uid));
+    // await this.redis.del(genAuthTokenKey(uid));
+    // await this.redis.del(genAuthPermKey(uid));
   }
 }

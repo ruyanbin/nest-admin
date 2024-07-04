@@ -9,7 +9,6 @@ import { AllExceptionsFilter } from '~/common/filters/any-exception.filter';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from '~/common/interceptors/transform.interceptor';
 import { TimeoutInterceptor } from '~/common/interceptors/timeout.interceptor';
-import { RedisCacheModule } from './shared/redis/redis.module';
 @Module({
   imports: [
     AuthModule,
@@ -23,7 +22,6 @@ import { RedisCacheModule } from './shared/redis/redis.module';
     // 数据库
     typeormconfig(),
     UserModule,
-    RedisCacheModule,
   ],
   controllers: [],
   providers: [
