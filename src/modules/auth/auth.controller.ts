@@ -11,7 +11,7 @@ import { UserService } from '../sys/user/user.service';
 import { CaptchaService } from './services/captcha.service';
 import { ApiResult } from '~/common/decorators/api-result.decorator';
 import { LoginToken } from './models/auth.model';
-import { LoginDto } from './dto/auth.dto';
+import { LoginDto, RegisterDto } from './dto/auth.dto';
 @ApiTags('Auth - 认证模块')
 @UseGuards(LocalGuard)
 @Public()
@@ -21,7 +21,7 @@ export class AuthController {
     private authService: AuthService,
     private userService: UserService,
     private captchaService: CaptchaService,
-  ) { }
+  ) {}
   @Post('login')
   @ApiOperation({ summary: '登录' })
   @ApiResult({ type: LoginToken })
@@ -30,7 +30,7 @@ export class AuthController {
     @Ip() ip: string,
     @Headers('user-agent') ua: string,
   ): Promise<LoginToken> {
-    await this.captchaService.chckeImgCaotcha(dto.captchaId, dto.verifyCode);
+    await this.captchaService.checkImgCaptcha(dto.captchaId, dto.verifyCode);
     const token = await this.authService.login(
       dto.username,
       dto.password,
@@ -38,5 +38,11 @@ export class AuthController {
       ua,
     );
     return { token };
+  }
+
+  @Post('register')
+  @ApiOperation({ summary: '注册' })
+  async register(@Body() data: RegisterDto): Promise<void> {
+    await this.userService.register(data);
   }
 }
