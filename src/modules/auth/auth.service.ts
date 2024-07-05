@@ -4,7 +4,7 @@ https://docs.nestjs.com/providers#services
 
 import { UserService } from '~/modules/sys/user/user.service';
 import { InjectRedis } from '@nestjs-modules/ioredis';
-import {Inject, Injectable} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 import { isEmpty } from 'lodash';
 import { BusinessException } from '~/common/exceptions/biz.exception';
@@ -13,9 +13,7 @@ import { md5 } from '~/utils';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private  userService: UserService,
-  ) { }
+  constructor(private userService: UserService) {}
 
   async validateUser(credential: string, password: string): Promise<any> {
     const user = await this.userService.findUserByUserName(credential);

@@ -18,7 +18,7 @@ import { UserEntity } from '~/modules/sys/user/user.entity';
 @ApiBasicAuth()
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
   @Get()
   @ApiOperation({ summary: '获取用户列表' })
   @ApiResult({ type: [UserEntity], isPage: true })

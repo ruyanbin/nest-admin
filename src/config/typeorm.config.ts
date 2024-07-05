@@ -7,7 +7,6 @@ export function typeormconfig() {
     imports: [ConfigModule],
     inject: [ConfigService],
     useFactory: (configService: ConfigService) => {
-      console.log(configService.get('mysql'))
       const mysql = configService.get('mysql');
       // console.log(db,'db')
       // console.log(mysql,'sql')

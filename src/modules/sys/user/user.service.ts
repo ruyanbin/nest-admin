@@ -32,7 +32,7 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectEntityManager()
     private entityManager: EntityManager,
-  ) { }
+  ) {}
 
   async findUserById(id: number): Promise<UserEntity | null> {
     return this.userRepository
@@ -88,7 +88,10 @@ export class UserService {
       ...(info.qq ? { qq: info.qq } : null),
       ...(info.remark ? { remark: info.remark } : null),
     };
-
+    if (!info.avatar && info.qq) {
+      // 如果qq 不相登则更新qq头像
+      // data.avater = await this.qqService.getAvater(info.qq)
+    }
     await this.userRepository.update(uid, data);
   }
 
@@ -124,7 +127,6 @@ export class UserService {
       throw new BusinessException(ErrorEnum.SYSTEM_USER_EXISTS);
     }
     await this.entityManager.transaction(async (manager) => {
-      console.log(manager, 'manager');
       const salt = randomValue(32);
       if (!password) {
         password = md5(`Aa123456${salt}`);

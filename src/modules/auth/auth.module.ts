@@ -9,14 +9,11 @@ import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '~/modules/sys/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import {TypeOrmModule} from "@nestjs/typeorm";
-import {AccessTokenEntity} from "~/modules/auth/entities/access-token.entity";
-import {RefreshTokenEntity} from "~/modules/auth/entities/refresh-token.entity";
-import {CaptchaService} from "~/modules/auth/services/captcha.service";
-const providers = [
-    AuthService,
-    CaptchaService
-]
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AccessTokenEntity } from '~/modules/auth/entities/access-token.entity';
+import { RefreshTokenEntity } from '~/modules/auth/entities/refresh-token.entity';
+import { CaptchaService } from '~/modules/auth/services/captcha.service';
+const providers = [AuthService, CaptchaService];
 @Module({
   imports: [
     TypeOrmModule.forFeature([AccessTokenEntity, RefreshTokenEntity]),
@@ -40,7 +37,7 @@ const providers = [
     UserModule,
   ],
   controllers: [AuthController],
-  providers: [... providers],
-  exports:[TypeOrmModule, JwtModule,...providers]
+  providers: [...providers],
+  exports: [TypeOrmModule, JwtModule, ...providers],
 })
 export class AuthModule {}
