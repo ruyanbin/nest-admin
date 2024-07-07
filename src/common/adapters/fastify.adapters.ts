@@ -9,17 +9,18 @@ const app: FastifyAdapter = new FastifyAdapter({
 });
 export { app as fastifyApp };
 
-app.register(FastifyMultipart, {
-  limits: {
-    fields: 10, // 最大文件数
-    fileSize: 1024 * 1024 * 6, // limit size 6M
-    files: 5, // Max number of file field
-  },
-});
-app.register(FastifyCookie, {
-  secret: 'cookie-secret', // 这个 secret 不太重要，不存鉴权相关，无关紧要
-});
-
+// app.register(FastifyMultipart,
+//   {
+//     limits: {
+//       fields: 10, // 最大文件数
+//       fileSize: 1024 * 1024 * 6, // limit size 6M
+//       files: 5, // Max number of file field
+//     },
+//   });
+// app.register( FastifyCookie, {
+//   secret: 'cookie-secret', // 这个 secret 不太重要，不存鉴权相关，无关紧要
+// });
+//
 app.getInstance().addHook('onRequest', (request, reply, done) => {
   // set undefined origin
   const { origin } = request.headers;

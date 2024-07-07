@@ -1,3 +1,6 @@
+// 生成永不重复的随机数
+import { nanoid } from 'nanoid';
+
 /**
  * 生成一个随机的值
  */
@@ -10,4 +13,8 @@ export function randomValue(
   const len = dict.length;
   while (i--) id += dict[(Math.random() * len) | 0];
   return id;
+}
+
+export function generateUUID(size: number = 21): string {
+  return nanoid(size);
 }

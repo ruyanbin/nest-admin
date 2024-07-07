@@ -24,6 +24,6 @@ export function genOnlineUserVKey(val: string | number) {
 }
 
 /** 生成 token blacklist redis key */
-export function genTokenBlackKey(val: string | number) {
-  return `${RedisKeys.TOKEN_BLACKLIST_PREFIX}${String(val)}` as const;
+export function genTokenBlacklistKey(tokenId: string) {
+  return `${RedisKeys.TOKEN_BLACKLIST_PREFIX}${String(tokenId)}` as const
 }

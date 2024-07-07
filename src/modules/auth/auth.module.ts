@@ -13,6 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AccessTokenEntity } from '~/modules/auth/entities/access-token.entity';
 import { RefreshTokenEntity } from '~/modules/auth/entities/refresh-token.entity';
 import { CaptchaService } from '~/modules/auth/services/captcha.service';
+import { AccountController } from './controllers/account.controller';
 const providers = [AuthService, CaptchaService];
 @Module({
   imports: [
@@ -36,7 +37,7 @@ const providers = [AuthService, CaptchaService];
     }),
     UserModule,
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, AccountController],
   providers: [...providers],
   exports: [TypeOrmModule, JwtModule, ...providers],
 })

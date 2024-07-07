@@ -16,3 +16,5 @@ ConfigModule.forRoot({
           //导入自定义配置文件，见下节
 })
  ```
+### passport-jwt
+此模块允许您使用JSON Web令牌对端点进行身份验证ß
