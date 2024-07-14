@@ -46,7 +46,7 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
     request.accessToken = token
    let result:any = false
     try{
-      result = await super.canActivate(contetx)
+      result = await super.canActivate(context)
     }catch(err){
       // 判断携带了token 的用户解析到request.user
       if(isPublic){
