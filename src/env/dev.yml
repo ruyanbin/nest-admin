@@ -13,8 +13,8 @@ swagger:
 mysql:
   host: '127.0.0.1'
   username: 'root'
-  password: '123456'
-  database: 'mydatabase'
+  password: '123456pwd'
+  database: 'my_database'
   port: 3306
   charser: 'utf8mb4'
   logger: 'advanced-console'
