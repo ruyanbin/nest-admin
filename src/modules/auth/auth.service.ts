@@ -10,10 +10,13 @@ import { isEmpty } from 'lodash';
 import { BusinessException } from '~/common/exceptions/biz.exception';
 import { ErrorEnum } from '~/constants/error-code.constant';
 import { md5 } from '~/utils';
+import { genAuthPVKey, genAuthTokenKey } from '~/helper/getRedisKey';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(
+    @InjectRedis() private readonly redis: Redis,
+    private userService: UserService) {}
 
   async validateUser(credential: string, password: string): Promise<any> {
     const user = await this.userService.findUserByUserName(credential);
@@ -79,5 +82,15 @@ export class AuthService {
    */
   async clearLoginStatus(user: IAuthUser, accessToken: string): Promise<void> {
     await this.userService.forbidden(user.uid, accessToken);
+  }
+
+  /**
+   * 获取权限列表
+   */
+  async getPasswordVersionByUid(uid: number): Promise<string> {
+    return this.redis.get(genAuthPVKey(uid))
+  }
+  async getTokenByUid(uid: number): Promise<string> {
+    return this.redis.get(genAuthTokenKey(uid))
   }
 }
