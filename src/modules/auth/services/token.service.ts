@@ -1,3 +1,4 @@
+
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRedis } from '@nestjs-modules/ioredis';
@@ -20,7 +21,7 @@ export class TokenService {
   /**
    *根据accessToken 刷新
 */
-	  
+
   async refreshToken(accessToken:AccessTokenEntity){
 	  const {user,refreshToken} = accessToken
 	  if(refreshToken){
@@ -29,7 +30,7 @@ export class TokenService {
 		  if(now.isAfter(refreshToken.expired_at)){
 			  return null
 		  }
-		  
+
 		  // 没有过期生成新的token
 		  // const token = await this.gener
 	  }
