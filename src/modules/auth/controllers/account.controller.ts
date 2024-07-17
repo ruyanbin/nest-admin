@@ -21,18 +21,19 @@ export class AccountController {
     private authService: AuthService,
   ) {}
   @Get('profile')
-  @ApiOperation({summary:"获取账户资料"})
-  @ApiResult({type:AccountInfo})
+  @ApiOperation({ summary: '获取账户资料' })
+  @ApiResult({ type: AccountInfo })
   @AllowAnon()
-  async profile(@AuthUser() user:IAuthUser): Promise<AccountInfo> {
-    return this.userService.getAccountInfo(user.uid)
+  async profile(@AuthUser() user: IAuthUser): Promise<AccountInfo> {
+    return this.userService.getAccountInfo(user.uid);
   }
   @Get('logout')
-  @ApiOperation({summary:"退出"})
+  @ApiOperation({ summary: '退出' })
   @AllowAnon()
-  async logout(@AuthUser() user:IAuthUser,@Req()req:FastifyRequest): Promise<void> {
-    await this.authService.clearLoginStatus(user, req.accessToken)
+  async logout(
+    @AuthUser() user: IAuthUser,
+    @Req() req: FastifyRequest,
+  ): Promise<void> {
+    await this.authService.clearLoginStatus(user, req.accessToken);
   }
-
-
 }

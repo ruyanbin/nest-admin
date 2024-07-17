@@ -1,2 +1,2 @@
-export * from "./security.config"
-export * from "./app.config"
+export * from './security.config';
+export * from './app.config';

@@ -40,6 +40,16 @@
 @IsDateString()	@IsISO8601()的别名。
 @IsNumberString(options?: IsNumericOptions)	检查字符串是否是一个数字。
 ```
+```angular2html
+@IsOptional(): 这个装饰器表示该属性是可选的，即验证时不会强制要求该属性存在。
+@IsDate(): 这个装饰器确保属性值是一个有效的日期。
+@IsEmail(): 这个装饰器确保属性值是一个有效的电子邮件地址。
+@IsString(): 这个装饰器确保属性值是一个字符串。
+@IsIn(['male', 'female']): 这个装饰器确保属性值是 'male' 或 'female' 中的一个。
+@IsPhoneNumber() 是一个装饰器，通常用于验证对象属性是否符合电话号码的格式
+@IsNotEmpty() 是一个装饰器，通常用于验证对象属性是否不为空。
+@IsNumberString() 是一个装饰器，通常用于验证对象属性是否为数字字符串
+```
 ```
 字符串验证装饰器	
 @Contains(seed: string)	检查字符串是否包含种子。

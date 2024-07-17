@@ -16,7 +16,8 @@ import { genAuthPVKey, genAuthTokenKey } from '~/helper/getRedisKey';
 export class AuthService {
   constructor(
     @InjectRedis() private readonly redis: Redis,
-    private userService: UserService) {}
+    private userService: UserService,
+  ) {}
 
   async validateUser(credential: string, password: string): Promise<any> {
     const user = await this.userService.findUserByUserName(credential);
@@ -88,9 +89,9 @@ export class AuthService {
    * 获取权限列表
    */
   async getPasswordVersionByUid(uid: number): Promise<string> {
-    return this.redis.get(genAuthPVKey(uid))
+    return this.redis.get(genAuthPVKey(uid));
   }
   async getTokenByUid(uid: number): Promise<string> {
-    return this.redis.get(genAuthTokenKey(uid))
+    return this.redis.get(genAuthTokenKey(uid));
   }
 }

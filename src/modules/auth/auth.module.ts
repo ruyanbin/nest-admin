@@ -14,7 +14,15 @@ import { AccessTokenEntity } from '~/modules/auth/entities/access-token.entity';
 import { RefreshTokenEntity } from '~/modules/auth/entities/refresh-token.entity';
 import { CaptchaService } from '~/modules/auth/services/captcha.service';
 import { AccountController } from './controllers/account.controller';
-const providers = [AuthService, CaptchaService];
+import { TokenService } from '~/modules/auth/services/token.service';
+import { CaptchaController } from '~/modules/auth/controllers/captcha.controller';
+const providers = [AuthService, CaptchaService, TokenService];
+
+const controllers = [
+  AuthController,
+  AccountController,
+  CaptchaController,
+]
 @Module({
   imports: [
     TypeOrmModule.forFeature([AccessTokenEntity, RefreshTokenEntity]),
@@ -37,7 +45,7 @@ const providers = [AuthService, CaptchaService];
     }),
     UserModule,
   ],
-  controllers: [AuthController, AccountController],
+  controllers: [...controllers],
   providers: [...providers],
   exports: [TypeOrmModule, JwtModule, ...providers],
 })
