@@ -15,7 +15,7 @@ import { Pagination } from '~/helper/paginate/pagination';
 import { paginate } from '~/helper/paginate';
 import { isNil } from '@nestjs/common/utils/shared.utils';
 import { RegisterDto } from '~/modules/auth/dto/auth.dto';
-import { InjectRedis } from '@nestjs-modules/ioredis';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
 import {
   genAuthPermKey,
@@ -26,8 +26,8 @@ import {
 @Injectable()
 export class UserService {
   constructor(
-    // @InjectRedis()
-    // private readonly redis: Redis,
+    @InjectRedis()
+    private readonly redis: Redis,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     @InjectEntityManager()
@@ -174,8 +174,8 @@ export class UserService {
   }: UserQueryDto): Promise<Pagination<UserEntity>> {
     const queryBuilder = this.userRepository
       .createQueryBuilder('user')
-      // .leftJoinAndSelect('user.dept','dept')
-      // .leftJoinAndSelect('user.roles', 'roles')
+      .leftJoinAndSelect('user.dept', 'dept')
+      .leftJoinAndSelect('user.roles', 'roles')
       .where({
         ...(username ? { username: Like(`%${username}%`) } : null),
         ...(nickname ? { nickname: Like(`%${nickname}%`) } : null),
@@ -226,8 +226,8 @@ export class UserService {
   }
 
   async forbidden(uid: number, accessToken: string) {
-    // await this.redis.del(genAuthPVKey(uid));
-    // await this.redis.del(genAuthTokenKey(uid));
-    // await this.redis.del(genAuthPermKey(uid));
+    await this.redis.del(genAuthPVKey(uid));
+    await this.redis.del(genAuthTokenKey(uid));
+    await this.redis.del(genAuthPermKey(uid));
   }
 }

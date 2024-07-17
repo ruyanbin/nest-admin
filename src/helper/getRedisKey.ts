@@ -19,7 +19,7 @@ export function genAuthPVKey(val: string | number) {
 }
 
 /** 生成 online user redis key */
-export function genOnlineUserVKey(val: string | number) {
+export function genOnlineUserKey(val: string | number) {
   return `${RedisKeys.ONLINE_USER_PREFIX}${String(val)}` as const;
 }
 

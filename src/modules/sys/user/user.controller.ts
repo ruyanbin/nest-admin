@@ -23,7 +23,8 @@ export class UserController {
   @ApiOperation({ summary: '获取用户列表' })
   @ApiResult({ type: [UserEntity], isPage: true })
   async list(@Query('page') dto: UserQueryDto) {
-    // return this.userService.list(dto);
+    console.log(dto,'userdto')
+    return this.userService.list(dto);
   }
 
   @Post()

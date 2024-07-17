@@ -7,7 +7,7 @@ const providers = [UserService];
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity])],
   controllers: [UserController],
-  providers: [UserService, ...providers],
-  exports: [...providers],
+  providers: [...providers],
+  exports: [TypeOrmModule, ...providers],
 })
 export class UserModule {}

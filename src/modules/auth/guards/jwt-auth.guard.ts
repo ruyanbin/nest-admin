@@ -8,7 +8,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthStrategy, PUBLIC_KEY } from '~/modules/auth/auto.constant';
 import { Reflector } from '@nestjs/core';
 import { AuthService } from '~/modules/auth/auth.service';
-import { InjectRedis } from '@nestjs-modules/ioredis';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { ExtractJwt } from 'passport-jwt';
 import { FastifyRequest } from 'fastify';
 import { genTokenBlacklistKey } from '~/helper/getRedisKey';
@@ -29,14 +29,16 @@ interface RequestType {
 @Injectable()
 export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
   jwtFromRequestFn = ExtractJwt.fromAuthHeaderAsBearerToken();
+
   constructor(
     private reflector: Reflector,
     private authService: AuthService,
     private tokenService: TokenService,
     @InjectRedis() private readonly redis: Redis,
-    @Inject(AppConfig.KEY) private appConfig: IAppConfig,
+    // @Inject(AppConfig.KEY) private appConfig: IAppConfig,
   ) {
     super();
+    // console.log(this.appConfig);
   }
   async canActivate(context: ExecutionContext): Promise<any> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(PUBLIC_KEY, [
@@ -84,14 +86,14 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
     }
 
     // 不允许多端登录
-    if (!this.appConfig.multiDeviceLogin) {
-      const cacheToken = await this.authService.getTokenByUid(request.user.uid);
-
-      if (token !== cacheToken) {
-        // 与redis保存不一致 即二次登录
-        throw new BusinessException(ErrorEnum.ACCOUNT_LOGGED_IN_ELSEWHERE);
-      }
-    }
+    // if (!this.appConfig.multiDeviceLogin) {
+    //   const cacheToken = await this.authService.getTokenByUid(request.user.uid);
+    //
+    //   if (token !== cacheToken) {
+    //     // 与redis保存不一致 即二次登录
+    //     throw new BusinessException(ErrorEnum.ACCOUNT_LOGGED_IN_ELSEWHERE);
+    //   }
+    // }
 
     return result;
   }

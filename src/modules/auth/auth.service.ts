@@ -3,7 +3,7 @@ https://docs.nestjs.com/providers#services
 */
 
 import { UserService } from '~/modules/sys/user/user.service';
-import { InjectRedis } from '@nestjs-modules/ioredis';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { Inject, Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 import { isEmpty } from 'lodash';

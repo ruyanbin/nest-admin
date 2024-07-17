@@ -40,27 +40,7 @@ async function bootstrap() {
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY, //个设置允许你指定在出现错误时将使用哪种异常类型 错误code
     }),
   );
-  // app.useGlobalPipes(
-  //   new ValidationPipe({
-  //     transform: true, // 可以自动将有效载荷转换为根据其 DTO 类型化的对象
-  //     whitelist: true, // 剥离属性 不在白名单中的属性都会自动从帝乡中剥离
-  //     transformOptions: {
-  //       enableImplicitConversion: true,
-  //     },
-  //     errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY, //个设置允许你指定在出现错误时将使用哪种异常类型 错误code
-  //     stopAtFirstError: true, //当设置为true时，在遇到第一个错误后，将停止对给定属性的验证。默认为false。
-  //     exceptionFactory: (errors) => {
-  //         console.log(errors,'pipe-errors')
-  //       new UnprocessableEntityException(
-  //         errors.map((e) => {
-  //           const rule = Object.keys(e.constraints!)[0];
-  //           const msg = e.constraints![rule];
-  //           return msg;
-  //         })[0],
-  //       );
-  //     },
-  //   }),
-  // );
+
   setupSwagger(app, configService);
   await app.listen(PORT, '0.0.0.0');
 }
