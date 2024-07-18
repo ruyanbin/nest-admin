@@ -66,12 +66,12 @@ export class TokenService {
     accessToken.user = { id: uid } as UserEntity;
     // accessToken.expired_at = dayjs()
     // .add(this.securityConfig.jwtExprire, 'second')
-    // .toDate()
+    // // .toDate()
 
     await accessToken.save();
 
     // 生成refreshToken
-    const refreshToken = await this.generateRefreshToken(accessToken, dayjs());
+    const refreshToken = await this.generateRefreshToken(accessToken,dayjs() );
 
     return {
       accessToken: jwtSign,
@@ -86,7 +86,7 @@ export class TokenService {
    */
   async generateRefreshToken(
     accessToken: AccessTokenEntity,
-    // now: dayjs.Dayjs,
+    now: dayjs.Dayjs,
   ): Promise<string> {
     const refreshTokenPayload = {
       uuid: generateUUID(),

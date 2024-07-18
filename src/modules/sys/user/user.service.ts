@@ -32,7 +32,7 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectEntityManager()
     private entityManager: EntityManager,
-  ) {}
+  ) { }
 
   async findUserById(id: number): Promise<UserEntity | null> {
     return this.userRepository
@@ -174,8 +174,8 @@ export class UserService {
   }: UserQueryDto): Promise<Pagination<UserEntity>> {
     const queryBuilder = this.userRepository
       .createQueryBuilder('user')
-      .leftJoinAndSelect('user.dept', 'dept')
-      .leftJoinAndSelect('user.roles', 'roles')
+      // .leftJoinAndSelect('user.dept', 'dept')
+      // .leftJoinAndSelect('user.roles', 'roles')
       .where({
         ...(username ? { username: Like(`%${username}%`) } : null),
         ...(nickname ? { nickname: Like(`%${nickname}%`) } : null),

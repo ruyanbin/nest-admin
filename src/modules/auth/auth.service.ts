@@ -82,7 +82,9 @@ export class AuthService {
    * 清除登录状态
    */
   async clearLoginStatus(user: IAuthUser, accessToken: string): Promise<void> {
-    await this.userService.forbidden(user.uid, accessToken);
+    // await this.userService.forbidden(user.uid, accessToken);
+    await this.userService.forbidden(user.uid);
+
   }
 
   /**

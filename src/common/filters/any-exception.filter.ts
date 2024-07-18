@@ -63,6 +63,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     } else if (exception instanceof QueryFailedError) {
       return exception.message;
     } else {
+      console.log(3);
       return (
         (exception as any)?.response?.message ??
         (exception as myError)?.message ??
