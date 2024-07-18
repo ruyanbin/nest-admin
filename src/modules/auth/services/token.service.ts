@@ -82,7 +82,7 @@ export class TokenService {
   /**
    * 生成新的RefreshToken并存入数据库
    * @param accessToken
-   * @param now
+   // * @param now
    */
   async generateRefreshToken(
     accessToken: AccessTokenEntity,
