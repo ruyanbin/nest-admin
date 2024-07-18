@@ -174,13 +174,12 @@ export class UserService {
   }: UserQueryDto): Promise<Pagination<UserEntity>> {
     const queryBuilder = this.userRepository
       .createQueryBuilder('user')
-      // .leftJoinAndSelect('user.dept', 'dept')
-      // .leftJoinAndSelect('user.roles', 'roles')
       .where({
-        ...(username ? { username: Like(`%${username}%`) } : null),
-        ...(nickname ? { nickname: Like(`%${nickname}%`) } : null),
-        ...(email ? { email: Like(`%${email}%`) } : null),
-        ...(!isNil(status) ? { status } : null),
+          username:Like(`%${username}%`),
+        // ...(username ? { username: Like(`%${username}%`) } : null),
+        // ...(nickname ? { nickname: Like(`%${nickname}%`) } : null),
+        // ...(email ? { email: Like(`%${email}%`) } : null),
+        // ...(!isNil(status) ? { status } : null),
       });
     return paginate<UserEntity>(queryBuilder, {
       page,
