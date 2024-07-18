@@ -10,10 +10,6 @@ export class UserEntity extends CommonEntity {
   @Exclude()
   @Column()
   password: string;
-
-  @Column({ length: 32 })
-  salt: string;
-
   @Column({ nullable: true })
   nickname: string;
   @Column({ name: 'avatar', nullable: true })
@@ -26,9 +22,8 @@ export class UserEntity extends CommonEntity {
   phone: string;
   @Column({ nullable: true })
   remark: string;
-  @Column({ type: 'tinyint', nullable: true, default: 1 })
-  status: number;
-
+  @Column({ nullable: true, default: '1' })
+  status: string;
   @OneToMany(() => AccessTokenEntity, (accessToken) => accessToken.user, {
     cascade: true,
   })

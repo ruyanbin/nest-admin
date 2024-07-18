@@ -18,12 +18,14 @@ import { UserEntity } from '~/modules/sys/user/user.entity';
 @ApiBasicAuth()
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
   @Get()
   @ApiOperation({ summary: '获取用户列表' })
   @ApiResult({ type: [UserEntity], isPage: true })
-  async list(@Query('page') dto: UserQueryDto) {
-    return this.userService.list(dto);
+  async list(@Query() dto: UserQueryDto) {
+    console.log(dto, '查询用户');
+    return await this.userService.list(dto);
+    // return this.userService.list(dto);
   }
 
   @Post()

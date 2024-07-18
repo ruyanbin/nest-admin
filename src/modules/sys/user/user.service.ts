@@ -32,7 +32,7 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectEntityManager()
     private entityManager: EntityManager,
-  ) { }
+  ) {}
 
   async findUserById(id: number): Promise<UserEntity | null> {
     return this.userRepository
@@ -68,9 +68,6 @@ export class UserService {
     if (isEmpty(user)) {
       throw new BusinessException(ErrorEnum.USER_NOT_FOUND);
     }
-
-    delete user?.salt;
-
     return user;
   }
 
@@ -88,10 +85,7 @@ export class UserService {
       ...(info.qq ? { qq: info.qq } : null),
       ...(info.remark ? { remark: info.remark } : null),
     };
-    if (!info.avatar && info.qq) {
-      // 如果qq 不相登则更新qq头像
-      // data.avater = await this.qqService.getAvater(info.qq)
-    }
+
     await this.userRepository.update(uid, data);
   }
 
@@ -104,19 +98,19 @@ export class UserService {
       throw new BusinessException(ErrorEnum.USER_NOT_FOUND);
     }
 
-    const comparePassword = md5(`${dto.oldPassword}${user.salt}`);
+    const comparePassword = md5(`${dto.oldPassword}`);
     // 原密码不一致，不允许更改
     if (user.password !== comparePassword) {
       throw new BusinessException(ErrorEnum.PASSWORD_MISMATCH);
     }
-    const password = md5(`${dto.newPassword}${user.salt}`);
+    const password = md5(`${dto.newPassword}`);
     await this.userRepository.update({ id: uid }, { password });
   }
 
   // 更改密码
   async forceUpdatePassword(uid: number, password: string): Promise<void> {
     const user = await this.userRepository.findOneBy({ id: uid });
-    const newPassword = md5(`${password}${user.salt}`);
+    const newPassword = md5(`${password}`);
     await this.userRepository.update({ id: uid }, { password: newPassword });
   }
 
@@ -127,15 +121,13 @@ export class UserService {
       throw new BusinessException(ErrorEnum.SYSTEM_USER_EXISTS);
     }
     await this.entityManager.transaction(async (manager) => {
-      const salt = randomValue(32);
       if (!password) {
-        password = md5(`Aa123456${salt}`);
+        password = md5(`Aa123456`);
       }
       const u = manager.create(UserEntity, {
         username,
         password,
         ...data,
-        salt: salt,
         roles: roleIds,
       });
       return await manager.save(u);
@@ -172,16 +164,35 @@ export class UserService {
     email,
     status,
   }: UserQueryDto): Promise<Pagination<UserEntity>> {
-    const queryBuilder = this.userRepository
-      .createQueryBuilder('user')
-      // .leftJoinAndSelect('user.dept', 'dept')
-      // .leftJoinAndSelect('user.roles', 'roles')
-      .where({
-        ...(username ? { username: Like(`%${username}%`) } : null),
-        ...(nickname ? { nickname: Like(`%${nickname}%`) } : null),
-        ...(email ? { email: Like(`%${email}%`) } : null),
-        ...(!isNil(status) ? { status } : null),
-      });
+    const queryBuilder = this.userRepository.createQueryBuilder('user').where({
+      ...(username ? { username } : null),
+      ...(nickname ? { nickname } : null),
+      ...(email ? { email } : null),
+      ...(status ? { status } : null),
+    });
+    return paginate<UserEntity>(queryBuilder, {
+      page,
+      pageSize,
+    });
+  }
+
+  /**
+   * 查询用户列表
+   */
+  async listAll({
+    page,
+    pageSize,
+    username,
+    nickname,
+    email,
+    status,
+  }: UserQueryDto): Promise<Pagination<UserEntity>> {
+    const queryBuilder = this.userRepository.createQueryBuilder('user').where({
+      ...(username ? { username } : null),
+      ...(status ? { status } : null),
+      ...(nickname ? { nickname } : null),
+      ...(email ? { email } : null),
+    });
     return paginate<UserEntity>(queryBuilder, {
       page,
       pageSize,
@@ -212,13 +223,11 @@ export class UserService {
       throw new BusinessException(ErrorEnum.SYSTEM_USER_EXISTS);
     }
     await this.entityManager.transaction(async (manager) => {
-      const salt = randomValue(32);
-      const password = md5(`${data.password ?? 'Aa123456'}${salt}`);
+      const password = md5(`${data.password ?? 'Aa123456'}`);
       const u = manager.create(UserEntity, {
         username,
         password,
-        status: 1,
-        salt: salt,
+        status: '1',
       });
       return await manager.save(u);
     });

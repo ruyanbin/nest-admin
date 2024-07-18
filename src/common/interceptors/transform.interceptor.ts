@@ -18,7 +18,7 @@ import { ResOp } from '~/common/model/response.model';
 export const BYPASS_KEY = '__bypass_key__';
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
-  constructor(private readonly reflector: Reflector) { }
+  constructor(private readonly reflector: Reflector) {}
   intercept(
     context: ExecutionContext,
     next: CallHandler<any>,

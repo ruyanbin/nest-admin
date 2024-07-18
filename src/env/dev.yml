@@ -11,7 +11,7 @@ swagger:
   PATH: 'api-docs'
   VERSION: '1.0'
 mysql:
-  host: '127.0.0.1'
+  host: 'localhost'
   username: 'root'
   password: '123456'
   database: 'my_database'

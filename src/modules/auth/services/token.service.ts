@@ -1,5 +1,5 @@
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import dayjs from 'dayjs';
 
@@ -11,6 +11,7 @@ import { generateUUID } from '~/utils';
 
 import { AccessTokenEntity } from '../entities/access-token.entity';
 import { RefreshTokenEntity } from '../entities/refresh-token.entity';
+import { ISecurityConfig, SecurityConfig } from '~/config';
 
 /**
  * 令牌服务
@@ -20,7 +21,7 @@ export class TokenService {
   constructor(
     private jwtService: JwtService,
     @InjectRedis() private redis: Redis,
-    // @Inject(SecurityConfig.KEY) private securityConfig: ISecurityConfig,
+    @Inject(SecurityConfig.KEY) private securityConfig: ISecurityConfig,
   ) {}
 
   /**
@@ -48,7 +49,7 @@ export class TokenService {
   }
 
   generateJwtSign(payload: any) {
-    return  this.jwtService.sign(payload);
+    return this.jwtService.sign(payload);
   }
 
   async generateAccessToken(uid: number, roles: string[] = []) {
@@ -63,15 +64,14 @@ export class TokenService {
     // 生成accessToken
     const accessToken = new AccessTokenEntity();
     accessToken.value = jwtSign;
-    accessToken.user = { id: uid } as UserEntity;
-    // accessToken.expired_at = dayjs()
-    // .add(this.securityConfig.jwtExprire, 'second')
-    // // .toDate()
-
+    accessToken.user = { id: uid } as UserEntity
+    accessToken.expired_at = dayjs()
+    .add(this.securityConfig.jwtExprire, 'second')
+    .toDate()
     await accessToken.save();
 
     // 生成refreshToken
-    const refreshToken = await this.generateRefreshToken(accessToken,dayjs() );
+    const refreshToken = await this.generateRefreshToken(accessToken, dayjs());
 
     return {
       accessToken: jwtSign,
@@ -95,15 +95,15 @@ export class TokenService {
     const refreshTokenSign = await this.jwtService.signAsync(
       refreshTokenPayload,
       {
-        // secret: this.securityConfig.refreshSecret,
+        secret: this.securityConfig.refreshSecret,
       },
     );
 
     const refreshToken = new RefreshTokenEntity();
     refreshToken.value = refreshTokenSign;
-    // refreshToken.expired_at = now
-    //   .add(this.securityConfig.refreshExpire, 'second')
-    //   .toDate()
+    refreshToken.expired_at = now
+      .add(this.securityConfig.refreshExpire, 'second')
+      .toDate()
     refreshToken.accessToken = accessToken;
 
     await refreshToken.save();

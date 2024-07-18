@@ -18,10 +18,10 @@ export class AccessTokenEntity extends BaseEntity {
   @Column({ length: 500 })
   value!: string;
   @Column({ comment: '令牌过期时间' })
-  expired_at!:Date;
+  expired_at!: Date;
 
   @CreateDateColumn({ comment: '令牌创建时间' })
-  create_at!: Date;
+  created_at!: Date;
 
   @OneToOne(
     () => RefreshTokenEntity,

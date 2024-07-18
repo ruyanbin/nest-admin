@@ -73,8 +73,7 @@ export class UserDto {
   remark?: string;
 
   @ApiProperty({ description: '状态' })
-  @IsIn([0, 1])
-  status: number;
+  status: string;
 }
 export class UserUpdateDto extends PartialType(UserDto) {}
 // 翻页
@@ -83,7 +82,6 @@ export class UserQueryDto extends IntersectionType(
   PartialType(UserDto),
 ) {
   @ApiProperty({ description: '状态', example: 0, required: false })
-  @IsInt()
   @IsOptional()
-  status?: number;
+  status?: string;
 }

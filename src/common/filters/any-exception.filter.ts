@@ -27,6 +27,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<FastifyReply>();
     const status = this.getStatus(exception);
+    console.log(exception, 'exception');
     const message = this.getErrorMessage(exception);
     const apiErrorCode =
       exception instanceof BusinessException
