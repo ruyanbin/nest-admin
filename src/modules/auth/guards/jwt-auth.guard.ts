@@ -1,6 +1,5 @@
 import {
   ExecutionContext,
-  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -17,7 +16,6 @@ import { ErrorEnum } from '~/constants/error-code.constant';
 import { isEmpty, isNil } from 'lodash';
 import Redis from 'ioredis';
 import { TokenService } from '~/modules/auth/services/token.service';
-import { AppConfig, IAppConfig } from '~/config';
 interface RequestType {
   Params: {
     uid?: string;
@@ -97,7 +95,7 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
 
     return result;
   }
-  handleRequest(err, user, info) {
+  handleRequest(err, user) {
     // You can throw an exception based on either "info" or "err" arguments
     if (err || !user) throw err || new UnauthorizedException();
 

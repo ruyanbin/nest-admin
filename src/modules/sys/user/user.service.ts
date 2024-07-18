@@ -220,8 +220,7 @@ export class UserService {
         status: 1,
         salt: salt,
       });
-      const user = await manager.save(u);
-      return user;
+      return await manager.save(u);
     });
   }
 

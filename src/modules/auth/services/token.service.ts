@@ -1,11 +1,10 @@
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import dayjs from 'dayjs';
 
 import Redis from 'ioredis';
 
-import { ISecurityConfig, SecurityConfig } from '~/config';
 import { genOnlineUserKey } from '../../../helper/getRedisKey';
 import { UserEntity } from '../../sys/user/user.entity';
 import { generateUUID } from '~/utils';
@@ -49,9 +48,7 @@ export class TokenService {
   }
 
   generateJwtSign(payload: any) {
-    const jwtSign = this.jwtService.sign(payload);
-
-    return jwtSign;
+    return  this.jwtService.sign(payload);
   }
 
   async generateAccessToken(uid: number, roles: string[] = []) {
@@ -89,7 +86,7 @@ export class TokenService {
    */
   async generateRefreshToken(
     accessToken: AccessTokenEntity,
-    now: dayjs.Dayjs,
+    // now: dayjs.Dayjs,
   ): Promise<string> {
     const refreshTokenPayload = {
       uuid: generateUUID(),

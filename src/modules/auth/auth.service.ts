@@ -4,7 +4,7 @@ https://docs.nestjs.com/providers#services
 
 import { UserService } from '~/modules/sys/user/user.service';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
-import { Inject, Injectable } from '@nestjs/common';
+import {  Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 import { isEmpty } from 'lodash';
 import { BusinessException } from '~/common/exceptions/biz.exception';
@@ -43,8 +43,8 @@ export class AuthService {
   async login(
     username: string,
     password: string,
-    ip: string,
-    ua: string,
+    // ip: string,
+    // ua: string,
   ): Promise<string> {
     const user = await this.userService.findUserByUserName(username);
     if (isEmpty(user)) {
