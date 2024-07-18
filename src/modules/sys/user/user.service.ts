@@ -224,7 +224,7 @@ export class UserService {
     });
   }
 
-  async forbidden(uid: number, accessToken: string) {
+  async forbidden(uid: number) {
     await this.redis.del(genAuthPVKey(uid));
     await this.redis.del(genAuthTokenKey(uid));
     await this.redis.del(genAuthPermKey(uid));

@@ -5,8 +5,8 @@ import dayjs from 'dayjs';
 
 import Redis from 'ioredis';
 
-import { genOnlineUserKey } from '../../../helper/getRedisKey';
-import { UserEntity } from '../../sys/user/user.entity';
+import { genOnlineUserKey } from '~/helper/getRedisKey';
+import { UserEntity } from '~/modules/sys/user/user.entity';
 import { generateUUID } from '~/utils';
 
 import { AccessTokenEntity } from '../entities/access-token.entity';
