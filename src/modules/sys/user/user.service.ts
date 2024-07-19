@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '~/modules/sys/user/user.entity';
-import { EntityManager, Like, Repository } from 'typeorm';
+import { EntityManager,  Repository } from 'typeorm';
 import { UserStatus } from './constant';
 import { AccountInfo } from './user.model';
+import { isEmpty } from 'lodash';
 import { md5, randomValue } from '~/utils';
 import { BusinessException } from '~/common/exceptions/biz.exception';
 import { ErrorEnum } from '~/constants/error-code.constant';
