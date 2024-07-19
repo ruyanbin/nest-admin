@@ -4,7 +4,6 @@ import { UserEntity } from '~/modules/sys/user/user.entity';
 import { EntityManager, Like, Repository } from 'typeorm';
 import { UserStatus } from './constant';
 import { AccountInfo } from './user.model';
-import { isEmpty } from 'lodash';
 import { md5, randomValue } from '~/utils';
 import { BusinessException } from '~/common/exceptions/biz.exception';
 import { ErrorEnum } from '~/constants/error-code.constant';
@@ -13,7 +12,6 @@ import { PasswordUpdateDto } from './dto/password.dto';
 import { UserDto, UserQueryDto, UserUpdateDto } from './dto/user.dto';
 import { Pagination } from '~/helper/paginate/pagination';
 import { paginate } from '~/helper/paginate';
-import { isNil } from '@nestjs/common/utils/shared.utils';
 import { RegisterDto } from '~/modules/auth/dto/auth.dto';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
@@ -69,7 +67,6 @@ export class UserService {
       throw new BusinessException(ErrorEnum.USER_NOT_FOUND);
     }
 
-    delete user?.salt;
 
     return user;
   }
@@ -115,7 +112,7 @@ export class UserService {
 
   // 更改密码
   async forceUpdatePassword(uid: number, password: string): Promise<void> {
-    const user = await this.userRepository.findOneBy({ id: uid });
+    // const user = await this.userRepository.findOneBy({ id: uid });
     const newPassword = md5(`${password}`);
     await this.userRepository.update({ id: uid }, { password: newPassword });
   }
@@ -177,29 +174,6 @@ export class UserService {
       ...(nickname ? { nickname } : null),
       ...(email ? { email } : null),
       ...(status ? { status } : null),
-    });
-    return paginate<UserEntity>(queryBuilder, {
-      page,
-      pageSize,
-    });
-  }
-
-  /**
-   * 查询用户列表
-   */
-  async listAll({
-    page,
-    pageSize,
-    username,
-    nickname,
-    email,
-    status,
-  }: UserQueryDto): Promise<Pagination<UserEntity>> {
-    const queryBuilder = this.userRepository.createQueryBuilder('user').where({
-      ...(username ? { username } : null),
-      ...(status ? { status } : null),
-      ...(nickname ? { nickname } : null),
-      ...(email ? { email } : null),
     });
     return paginate<UserEntity>(queryBuilder, {
       page,
