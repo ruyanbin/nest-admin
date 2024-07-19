@@ -68,6 +68,9 @@ export class UserService {
     if (isEmpty(user)) {
       throw new BusinessException(ErrorEnum.USER_NOT_FOUND);
     }
+
+    delete user?.salt;
+
     return user;
   }
 
@@ -85,7 +88,10 @@ export class UserService {
       ...(info.qq ? { qq: info.qq } : null),
       ...(info.remark ? { remark: info.remark } : null),
     };
-
+    if (!info.avatar && info.qq) {
+      // 如果qq 不相登则更新qq头像
+      // data.avater = await this.qqService.getAvater(info.qq)
+    }
     await this.userRepository.update(uid, data);
   }
 
@@ -121,6 +127,7 @@ export class UserService {
       throw new BusinessException(ErrorEnum.SYSTEM_USER_EXISTS);
     }
     await this.entityManager.transaction(async (manager) => {
+      const salt = randomValue(32);
       if (!password) {
         password = md5(`Aa123456`);
       }
@@ -128,6 +135,7 @@ export class UserService {
         username,
         password,
         ...data,
+        salt: salt,
         roles: roleIds,
       });
       return await manager.save(u);
