@@ -18,11 +18,14 @@ import { ISecurityConfig, SecurityConfig } from '~/config';
  */
 @Injectable()
 export class TokenService {
+  private securityConfig: ISecurityConfig;
   constructor(
     private jwtService: JwtService,
     @InjectRedis() private redis: Redis,
-    @Inject(SecurityConfig.KEY) private securityConfig: ISecurityConfig,
-  ) {}
+  ) {
+    this.securityConfig = SecurityConfig();
+    console.log(this.securityConfig, '33333');
+  }
 
   /**
    * 根据accessToken刷新AccessToken与RefreshToken
@@ -35,9 +38,6 @@ export class TokenService {
       const now = dayjs();
       // 判断refreshToken是否过期
       if (now.isAfter(refreshToken.expired_at)) return null;
-
-      // const roleIds = await this.roleService.getRoleIdsByUser(user.id)
-      // const roleValues = await this.roleService.getRoleValues(roleIds)
 
       // 如果没过期则生成新的access_token和refresh_token
       const token = await this.generateAccessToken(user.id, ['1']);
@@ -60,18 +60,20 @@ export class TokenService {
     };
 
     const jwtSign = await this.jwtService.signAsync(payload);
-
+    console.log(1);
     // 生成accessToken
     const accessToken = new AccessTokenEntity();
     accessToken.value = jwtSign;
-    accessToken.user = { id: uid } as UserEntity
+    accessToken.user = { id: uid } as UserEntity;
+    console.log(2, this.securityConfig.jwtExprire);
+    console.log(dayjs());
     accessToken.expired_at = dayjs()
-    .add(this.securityConfig.jwtExprire, 'second')
-    .toDate()
+      .add(this.securityConfig.jwtExprire, 'second')
+      .toDate();
     await accessToken.save();
-
+    console.log(accessToken, 'accessToken');
     // 生成refreshToken
-    const refreshToken = await this.generateRefreshToken(accessToken, dayjs());
+    const refreshToken = await this.generateRefreshToken(accessToken);
 
     return {
       accessToken: jwtSign,
@@ -84,10 +86,7 @@ export class TokenService {
    * @param accessToken
    // * @param now
    */
-  async generateRefreshToken(
-    accessToken: AccessTokenEntity,
-    now: dayjs.Dayjs,
-  ): Promise<string> {
+  async generateRefreshToken(accessToken: AccessTokenEntity): Promise<string> {
     const refreshTokenPayload = {
       uuid: generateUUID(),
     };
@@ -101,9 +100,9 @@ export class TokenService {
 
     const refreshToken = new RefreshTokenEntity();
     refreshToken.value = refreshTokenSign;
-    refreshToken.expired_at = now
+    refreshToken.expired_at = dayjs()
       .add(this.securityConfig.refreshExpire, 'second')
-      .toDate()
+      .toDate();
     refreshToken.accessToken = accessToken;
 
     await refreshToken.save();
@@ -125,7 +124,7 @@ export class TokenService {
         cache: true,
       });
       isValid = Boolean(res);
-    } catch (error) {}
+    } catch (error) { }
 
     return isValid;
   }

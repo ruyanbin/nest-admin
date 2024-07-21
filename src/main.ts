@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { setupSwagger } from './setupSwagger';
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { fastifyApp } from './common/adapters/fastify.adapters';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { useContainer } from 'class-validator';
 import { HttpStatus, ValidationPipe } from '@nestjs/common';
 
@@ -40,7 +40,8 @@ async function bootstrap() {
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY, //个设置允许你指定在出现错误时将使用哪种异常类型 错误code
     }),
   );
-
+  // 使用ConfigModule读取.env文件中的配置
+  ConfigModule.forRoot({ isGlobal: true });
   setupSwagger(app, configService);
   await app.listen(PORT, '0.0.0.0');
 }

@@ -8,4 +8,5 @@ export const SecurityConfig = registerAs(securityRegToke, () => ({
   refreshSecret: env('REFRESH_TOKEN_SECRET'),
   refreshExpire: envNumber('REFRESH_TOKEN_EXPIRE'),
 }));
+
 export type ISecurityConfig = ConfigType<typeof SecurityConfig>;

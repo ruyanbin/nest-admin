@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '~/modules/sys/user/user.entity';
-import { EntityManager,  Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { UserStatus } from './constant';
 import { AccountInfo } from './user.model';
 import { isEmpty } from 'lodash';
@@ -67,7 +67,6 @@ export class UserService {
     if (isEmpty(user)) {
       throw new BusinessException(ErrorEnum.USER_NOT_FOUND);
     }
-
 
     return user;
   }
