@@ -1,6 +1,7 @@
 import { AuthModule } from './modules/auth/auth.module';
 import { Module } from '@nestjs/common';
-import configuration from './env/index';
+import config from './config/index';
+
 import { typeormconfig } from './config/typeorm.config';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './modules/sys/user/user.module';
@@ -19,7 +20,8 @@ import { RedisModule } from './shared/redis/redis.module';
       cache: true,
       expandVariables: true,
       isGlobal: true,
-      load: [configuration],
+      envFilePath: [`.env.${process.env.NODE_ENV}`, '.env'],
+      load: [...Object.values(config)],
     }),
     // 数据库
     typeormconfig(),

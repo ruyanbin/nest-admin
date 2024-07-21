@@ -8,6 +8,6 @@ const providers = [UserService];
   imports: [TypeOrmModule.forFeature([UserEntity])],
   controllers: [UserController],
   providers: [...providers],
-  exports: [TypeOrmModule,...providers],
+  exports: [TypeOrmModule, ...providers],
 })
 export class UserModule {}

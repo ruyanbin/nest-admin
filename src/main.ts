@@ -40,7 +40,6 @@ async function bootstrap() {
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY, //个设置允许你指定在出现错误时将使用哪种异常类型 错误code
     }),
   );
-
   setupSwagger(app, configService);
   await app.listen(PORT, '0.0.0.0');
 }

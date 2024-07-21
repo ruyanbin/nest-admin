@@ -11,8 +11,9 @@ export class RedisSubPub {
     console.log(this.redisConfig, 'redisConfig');
     this.init();
   }
-
   public init() {
+    console.log('init', this.redisConfig);
+
     const redisOptions: RedisOptions = {
       host: this.redisConfig.host,
       port: this.redisConfig.port,
