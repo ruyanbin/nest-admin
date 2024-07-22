@@ -6,7 +6,7 @@ import { fastifyApp } from './common/adapters/fastify.adapters';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { useContainer } from 'class-validator';
 import { HttpStatus, ValidationPipe } from '@nestjs/common';
-
+import { env, envBoolean, envNumber, envString } from '~/global/env';
 async function bootstrap() {
   // 使用fastify驱动
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -23,10 +23,10 @@ async function bootstrap() {
     },
   );
   const configService = app.get(ConfigService);
-  const { PORT, PREFIX } = configService.get('app', { infer: true });
+  const PORT = envNumber('APP_PORT', 3000);
   // 启动跨域访问 与app 中的cores 不能共存
   app.enableCors({ origin: '*', credentials: true });
-  app.setGlobalPrefix(PREFIX);
+  app.setGlobalPrefix('/api');
   // class-validator 的 DTO 类中注入 nest 容器的依赖 (用于自定义验证器)
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   // pipe
