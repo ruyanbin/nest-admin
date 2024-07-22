@@ -50,7 +50,6 @@ export class TokenService {
   }
 
   async generateAccessToken(uid: number, roles: string[] = []) {
-    console.log(22);
     const payload: IAuthUser = {
       uid,
       pv: 1,
@@ -58,7 +57,7 @@ export class TokenService {
     };
 
     const jwtSign = await this.jwtService.signAsync(payload);
-    console.log(1);
+
     // 生成accessToken
     const accessToken = new AccessTokenEntity();
     accessToken.value = jwtSign;
@@ -67,7 +66,7 @@ export class TokenService {
       .add(this.securityConfig.jwtExpire, 'second')
       .toDate();
     await accessToken.save();
-    console.log(accessToken, 'accessToken');
+
     // 生成refreshToken
     const refreshToken = await this.generateRefreshToken(accessToken);
 
@@ -82,7 +81,10 @@ export class TokenService {
    * @param accessToken
    // * @param now
    */
-  async generateRefreshToken(accessToken: AccessTokenEntity): Promise<string> {
+  async generateRefreshToken(
+    accessToken: AccessTokenEntity,
+    now: dayjs.Dayjs,
+  ): Promise<string> {
     const refreshTokenPayload = {
       uuid: generateUUID(),
     };
@@ -96,9 +98,9 @@ export class TokenService {
 
     const refreshToken = new RefreshTokenEntity();
     refreshToken.value = refreshTokenSign;
-    refreshToken.expired_at = dayjs()
+    refreshToken.expired_at = now
       .add(this.securityConfig.refreshExpire, 'second')
-      .toDate();
+      .toDate()
     refreshToken.accessToken = accessToken;
 
     await refreshToken.save();
