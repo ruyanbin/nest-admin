@@ -83,7 +83,6 @@ export class TokenService {
    */
   async generateRefreshToken(
     accessToken: AccessTokenEntity,
-    now: dayjs.Dayjs,
   ): Promise<string> {
     const refreshTokenPayload = {
       uuid: generateUUID(),
