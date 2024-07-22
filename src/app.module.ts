@@ -11,7 +11,6 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from '~/common/interceptors/transform.interceptor';
 import { TimeoutInterceptor } from '~/common/interceptors/timeout.interceptor';
 import { RedisModule } from './shared/redis/redis.module';
-
 @Module({
   imports: [
     AuthModule,

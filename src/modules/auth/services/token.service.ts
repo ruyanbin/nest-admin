@@ -81,9 +81,7 @@ export class TokenService {
    * @param accessToken
    // * @param now
    */
-  async generateRefreshToken(
-    accessToken: AccessTokenEntity,
-  ): Promise<string> {
+  async generateRefreshToken(accessToken: AccessTokenEntity): Promise<string> {
     const refreshTokenPayload = {
       uuid: generateUUID(),
     };

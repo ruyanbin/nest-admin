@@ -10,8 +10,8 @@ export function setupSwagger(
   configService: ConfigService,
 ): void {
   const NAME = envString('NAME');
-  const PATH = envString('PATH');
-  const ENABLE = envBoolean('ENABLE');
+  const PATH = envString('SWAGGER_PATH', '/api-docs');
+  const ENABLE = envBoolean('SWAGGER_ENABLE', true);
 
   if (!ENABLE) return;
   const documentBuilder = new DocumentBuilder()
