@@ -97,9 +97,9 @@ export class TokenService {
 
     const refreshToken = new RefreshTokenEntity();
     refreshToken.value = refreshTokenSign;
-    refreshToken.expired_at = now
+    refreshToken.expired_at = dayjs()
       .add(this.securityConfig.refreshExpire, 'second')
-      .toDate()
+      .toDate();
     refreshToken.accessToken = accessToken;
 
     await refreshToken.save();
