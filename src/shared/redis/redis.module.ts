@@ -31,7 +31,6 @@ const providers: Provider[] = [
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         const redisOptions: RedisOptions = configService.get('redis');
-        console.log(redisOptions, 'redisOptions');
         return {
           isGlobal: true,
           store: redisStore,

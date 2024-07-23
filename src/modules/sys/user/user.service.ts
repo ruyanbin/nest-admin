@@ -43,11 +43,11 @@ export class UserService {
       .getOne();
   }
 
-  async findUserByUserName(username: string): Promise<UserEntity | null> {
+  async findUserByUserName(username: string): Promise<UserEntity | undefined> {
     return this.userRepository
       .createQueryBuilder('user')
       .where({
-        username: username,
+        username,
         status: UserStatus.Enabled,
       })
       .getOne();

@@ -1,7 +1,7 @@
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 
 import Redis from 'ioredis';
 
@@ -32,7 +32,7 @@ export class TokenService {
     const { user, refreshToken } = accessToken;
 
     if (refreshToken) {
-      const now = dayjs();
+      const now = dayjs(new Date());
       // 判断refreshToken是否过期
       if (now.isAfter(refreshToken.expired_at)) return null;
 
@@ -57,7 +57,7 @@ export class TokenService {
     };
 
     const jwtSign = await this.jwtService.signAsync(payload);
-
+    console.log('token1');
     // 生成accessToken
     const accessToken = new AccessTokenEntity();
     accessToken.value = jwtSign;
@@ -66,7 +66,6 @@ export class TokenService {
       .add(this.securityConfig.jwtExpire, 'second')
       .toDate();
     await accessToken.save();
-
     // 生成refreshToken
     const refreshToken = await this.generateRefreshToken(accessToken);
 
@@ -95,7 +94,7 @@ export class TokenService {
 
     const refreshToken = new RefreshTokenEntity();
     refreshToken.value = refreshTokenSign;
-    refreshToken.expired_at = dayjs()
+    refreshToken.expired_at = dayjs(new Date())
       .add(this.securityConfig.refreshExpire, 'second')
       .toDate();
     refreshToken.accessToken = accessToken;
