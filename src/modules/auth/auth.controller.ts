@@ -34,8 +34,8 @@ export class AuthController {
     const token = await this.authService.login(
       dto.username,
       dto.password,
-      // ip,
-      // ua,
+      ip,
+      ua,
     );
     return { token };
   }

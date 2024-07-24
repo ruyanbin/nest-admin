@@ -11,6 +11,8 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from '~/common/interceptors/transform.interceptor';
 import { TimeoutInterceptor } from '~/common/interceptors/timeout.interceptor';
 import { RedisModule } from './shared/redis/redis.module';
+import { RoleModule } from './modules/sys/role/role/role.module';
+import { RolesModule } from './modules/sys/roles/roles.module';
 @Module({
   imports: [
     AuthModule,
@@ -26,6 +28,8 @@ import { RedisModule } from './shared/redis/redis.module';
     typeormconfig(),
     UserModule,
     RedisModule,
+    RoleModule,
+    RolesModule,
   ],
   controllers: [],
   providers: [

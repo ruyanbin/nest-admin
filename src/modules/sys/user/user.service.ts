@@ -20,7 +20,9 @@ import {
   genAuthPermKey,
   genAuthPVKey,
   genAuthTokenKey,
+  genOnlineUserKey,
 } from '~/helper/getRedisKey';
+import { AccessTokenEntity } from '~/modules/auth/entities/access-token.entity';
 
 @Injectable()
 export class UserService {
@@ -214,10 +216,16 @@ export class UserService {
       return await manager.save(u);
     });
   }
-
-  async forbidden(uid: number) {
+  // 查找删除token
+  async forbidden(uid: number, accessToken: string) {
     await this.redis.del(genAuthPVKey(uid));
     await this.redis.del(genAuthTokenKey(uid));
     await this.redis.del(genAuthPermKey(uid));
+    if (accessToken) {
+      const token = await AccessTokenEntity.findOne({
+        where: { value: accessToken },
+      });
+      this.redis.del(genOnlineUserKey(token.id));
+    }
   }
 }

@@ -49,9 +49,10 @@ export class AuthService {
   async login(
     username: string,
     password: string,
-    // ip: string,
-    // ua: string,
+    ip: string,
+    ua: string,
   ): Promise<string> {
+    console.log('login', username, password, ip, ua);
     const user = await this.userService.findUserByUserName(username);
 
     if (isEmpty(user)) {
@@ -97,9 +98,9 @@ export class AuthService {
   /**
    * 清除登录状态
    */
-  async clearLoginStatus(user: IAuthUser): Promise<void> {
-    // await this.userService.forbidden(user.uid, accessToken);
-    await this.userService.forbidden(user.uid);
+  async clearLoginStatus(user: IAuthUser, accessToken: string): Promise<void> {
+    await this.userService.forbidden(user.uid, accessToken);
+    // await this.userService.forbidden(user.uid);
   }
 
   /**

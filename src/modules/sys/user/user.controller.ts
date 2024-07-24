@@ -9,16 +9,19 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiBasicAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {  ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UserDto, UserQueryDto, UserUpdateDto } from './dto/user.dto';
 import { ApiResult } from '~/common/decorators/api-result.decorator';
 import { UserEntity } from '~/modules/sys/user/user.entity';
+import { ApiSecurityAuth } from '~/common/decorators/swagger.decorators';
+
 @ApiTags('System - 用户模块')
-@ApiBasicAuth()
+@ApiSecurityAuth()
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
+
   @Get()
   @ApiOperation({ summary: '获取用户列表' })
   @ApiResult({ type: [UserEntity], isPage: true })

@@ -7,6 +7,7 @@ import {
 import { METHOD_METADATA } from '@nestjs/common/constants';
 import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger';
 import { ResOp } from '../model/response.model';
+// import { RoleEntity } from '~/modules/sys/roles/role.entity';
 const baseTypeNames = ['String', 'Number', 'Boolean'];
 function genBaseProp(type: Type<any>) {
   if (baseTypeNames.includes(type.name))
@@ -17,11 +18,7 @@ function genBaseProp(type: Type<any>) {
 /**
  *生成返回结果装饰器
  */
-export function ApiResult<TModel extends Type<any>>({
-  type,
-  isPage,
-  status,
-}: {
+export function ApiResult<TModel extends Type<any>>(type: {
   type?: TModel | TModel[];
   isPage?: boolean;
   status?: HttpStatus;
