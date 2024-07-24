@@ -11,7 +11,8 @@ import {
 import { OperatorDto } from '~/common/dto/operator.dto';
 import { PagerDto } from '~/common/dto/pager.dto';
 
-// import { RoleEntity } from './role.entity';
+import { RoleEntity } from './role.entity';
+import { IsUnique } from '~/shared/database/contraints/unique.constraint';
 
 export class RoleDto extends OperatorDto {
   @ApiProperty({ description: '角色名称' })
@@ -19,7 +20,7 @@ export class RoleDto extends OperatorDto {
   @MinLength(2, { message: '角色名称长度不能小于2' })
   name: string;
 
-  // @IsUnique({ entity: RoleEntity })
+  @IsUnique({ entity: RoleEntity })
   @ApiProperty({ description: '角色标识' })
   @IsString()
   @Matches(/^[a-z0-9]+$/i, { message: '角色值只能包含字母和数字' })

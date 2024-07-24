@@ -1,17 +1,17 @@
 import { Controller, Get, Query } from '@nestjs/common';
-// import { RolesService } from '~/modules/sys/roles/roles.service';
 import { ApiOperation } from '@nestjs/swagger';
-// import { ApiResult } from '~/common/decorators/api-result.decorator';
+import { ApiResult } from '~/common/decorators/api-result.decorator';
 import { RoleQueryDto } from '~/modules/sys/roles/roles.dto';
-// import { RoleEntity } from '~/modules/sys/roles/role.entity';
+import { RoleEntity } from '~/modules/sys/roles/role.entity';
+import { RolesService } from '~/modules/sys/roles/roles.service';
 
 @Controller('roles')
 export class RolesController {
-  constructor() {}
+  constructor(private rolesService: RolesService) {}
   @Get('list')
   @ApiOperation({ summary: '获取角色列表' })
-  // @ApiResult({ type: [RoleEntity], isPage: true })
+  @ApiResult({ type: [RoleEntity], isPage: true })
   async list(@Query() dto: RoleQueryDto) {
-    return '111';
+    return this.rolesService.list(dto);
   }
 }
