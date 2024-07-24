@@ -1,12 +1,13 @@
 import {
   registerDecorator,
-  ValidationArguments,
+  ValidationArguments, ValidatorConstraint,
   ValidatorConstraintInterface,
-  ValidatorOptions,
-} from 'class-validator';
-import { DataSource, ObjectType } from 'typeorm';
+  ValidatorOptions
+} from "class-validator";
+import { DataSource, Not, ObjectType } from "typeorm";
 import { ClsService } from 'nestjs-cls';
-import { isNil } from 'lodash';
+import { isNil ,merge} from 'lodash';
+import { Injectable } from "@nestjs/common";
 interface Condition {
   entity: ObjectType<any>;
   /** 如果没有指定字段则使用当前验证的属性作为查询依据 */

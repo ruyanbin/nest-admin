@@ -4,6 +4,7 @@ import { Pagination } from '~/helper/paginate/pagination';
 import { RoleEntity } from '~/modules/sys/roles/role.entity';
 import { paginate } from '~/helper/paginate';
 import { Repository } from 'typeorm';
+import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class RolesService {

@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 import { isEmpty } from 'lodash';
-import { InjectRedis } from '@nestjs-modules/ioredis';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { BusinessException } from '~/common/exceptions/biz.exception';
 import { ErrorEnum } from '~/constants/error-code.constant';
 import { genCaptchaImgKey } from '~/helper/getRedisKey';
 @Injectable()
 export class CaptchaService {
-  constructor(private redis: Redis) {} // @InjectRedis() private redis: Redis
+  constructor(
+    @InjectRedis()
+    private readonly redis: Redis,
+  ){}
 
   /**
    * 校验图片验证码

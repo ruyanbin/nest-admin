@@ -22,12 +22,13 @@ export class CaptchaController {
   @Public() // 不进行token 验证
   async captchaByImg(@Query() dto: ImageCaptchaDto): Promise<ImageCaptcha> {
     const { width, height } = dto;
+    console.log(height,'height')
     const svg = svgCaptcha.create({
       size: 4,
       color: true,
       noise: 4,
-      width: isEmpty(width) ? 100 : width,
-      height: isEmpty(height) ? 50 : height,
+      width: isEmpty(width) ? width : 100,
+      height: isEmpty(height) ? height : 50,
       charPreset: '1234567890',
     });
     const result = {
