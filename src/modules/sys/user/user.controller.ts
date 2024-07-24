@@ -9,7 +9,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import {  ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UserDto, UserQueryDto, UserUpdateDto } from './dto/user.dto';
 import { ApiResult } from '~/common/decorators/api-result.decorator';
