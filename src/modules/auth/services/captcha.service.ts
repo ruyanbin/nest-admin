@@ -7,10 +7,7 @@ import { ErrorEnum } from '~/constants/error-code.constant';
 import { genCaptchaImgKey } from '~/helper/getRedisKey';
 @Injectable()
 export class CaptchaService {
-  constructor(
-    @InjectRedis()
-    private readonly redis: Redis,
-  ) {}
+  constructor(@InjectRedis() private redis: Redis) {}
 
   /**
    * 校验图片验证码

@@ -9,7 +9,6 @@ import { ImageCaptchaDto } from '~/modules/auth/dto/captcha.dto';
 import * as svgCaptcha from 'svg-captcha';
 import { generateUUID } from '~/utils';
 import { isEmpty } from 'lodash';
-import { generate } from 'rxjs';
 import { genCaptchaImgKey } from '~/helper/getRedisKey';
 @ApiTags('Captchas -验证码模块')
 @Controller('auth/captcha')
@@ -22,7 +21,6 @@ export class CaptchaController {
   @Public() // 不进行token 验证
   async captchaByImg(@Query() dto: ImageCaptchaDto): Promise<ImageCaptcha> {
     const { width, height } = dto;
-    console.log(height, 'height');
     const svg = svgCaptcha.create({
       size: 4,
       color: true,

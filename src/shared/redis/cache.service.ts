@@ -15,6 +15,8 @@ export class CacheService {
     this.cache = cache;
   }
   private get redisClient(): Redis {
+    // eslint-disable-next-line ts/ban-ts-comment
+    // @ts-expect-error
     return this.cache.store.client;
   }
 
