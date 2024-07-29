@@ -10,7 +10,7 @@ export class CaptchaService {
   constructor(
     @InjectRedis()
     private readonly redis: Redis,
-  ){}
+  ) {}
 
   /**
    * 校验图片验证码

@@ -15,7 +15,6 @@ export class CacheService {
     this.cache = cache;
   }
   private get redisClient(): Redis {
-    // @ts-expect-error
     return this.cache.store.client;
   }
 

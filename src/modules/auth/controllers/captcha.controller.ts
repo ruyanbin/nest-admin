@@ -22,7 +22,7 @@ export class CaptchaController {
   @Public() // 不进行token 验证
   async captchaByImg(@Query() dto: ImageCaptchaDto): Promise<ImageCaptcha> {
     const { width, height } = dto;
-    console.log(height,'height')
+    console.log(height, 'height');
     const svg = svgCaptcha.create({
       size: 4,
       color: true,
