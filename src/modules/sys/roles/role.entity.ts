@@ -11,10 +11,6 @@ export class RoleEntity extends CompleteEntity {
   @ApiProperty({ description: '角色名' })
   name: string;
 
-  @Column({ unique: true, comment: '角色标识' })
-  @ApiProperty({ description: '角色标识' })
-  value: string;
-
   @Column({ nullable: true })
   @ApiProperty({ description: '角色描述' })
   remark: string;

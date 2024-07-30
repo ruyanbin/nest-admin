@@ -4,8 +4,6 @@ import {
   ArrayMinSize,
   ArrayNotEmpty,
   IsEmail,
-  IsIn,
-  IsInt,
   IsOptional,
   IsString,
   Matches,
@@ -27,7 +25,7 @@ export class UserDto {
   @Matches(/^[a-zA-Z0-9]+$/, {
     message: '账户只能由字母，数字组成',
   })
-  @MinLength(4)
+  @MinLength(4, { message: '用户名长度为4-20' })
   @MaxLength(20)
   username: string;
 

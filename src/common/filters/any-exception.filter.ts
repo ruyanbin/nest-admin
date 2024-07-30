@@ -1,8 +1,4 @@
-import {
-  ArgumentsHost,
-  ExceptionFilter,
-  HttpException,
-} from '@nestjs/common';
+import { ArgumentsHost, ExceptionFilter, HttpException } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 import { QueryFailedError } from 'typeorm';
 
